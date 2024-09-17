@@ -8,4 +8,5 @@ oh and also i made like 20 presets-
 First, find the part wheres theres a bunch on stuff like this:
 
 > // text
+> 
 >    text = text.replace(/**(.*?)**/g, '<span class="something">$1</span>');
