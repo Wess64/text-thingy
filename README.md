@@ -5,7 +5,8 @@ This is just a random thing i made in like **8 hours**, and its just a text effe
 oh and also i made like 20 presets-
 
 ## Okay, cool, but how to i make my own things? 
-First, make a css style
+First, make a css style 
+
 // thing {  
 
 //    background-color: red;  
