@@ -13,4 +13,4 @@ First, find the part wheres theres a bunch on stuff like this:
 
 Copypaste that under the last one (of the example i showed) and change:  
 > things on the **(/##(.*?)##** section _(in this case, the **#'s**)_
-> to make the effect trigger itself (example: *_**$**_ text _**%**_)
+> to make the effect trigger itself (example: _**$**_ text _**$**_)
