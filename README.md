@@ -11,8 +11,9 @@ First, make a css style
 
 //    background-color: red;  
 
-// }
-(you can use this if you dont know css well :))
+// }  
+
+(you can use this if you dont know css well, just remove the //'s)
 
 With the css done, find the part wheres theres a bunch of stuff like this:
 
