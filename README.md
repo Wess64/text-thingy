@@ -7,9 +7,7 @@ oh and also i made like 20 presets-
 ## Okay, cool, but how to i make my own things?
 First, make a css style  
 > .thing {
-> 
->      background-color: red;
-> 
+> background-color: red;
 > }
 (you can use this if you dont know css well :))
 
