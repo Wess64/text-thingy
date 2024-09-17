@@ -9,4 +9,4 @@ First, find the part wheres theres a bunch on stuff like this:
 
 > // text
 > 
->    text = text.replace(/**(.*?)**/g, '<span class="something">$1</span>');
+>    text = text.replace(/##(.*?)##/g, '<thing="something">$1</thing>');
