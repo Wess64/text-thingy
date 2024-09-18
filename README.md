@@ -22,7 +22,7 @@ With the css done, find the part wheres theres a bunch of stuff like this:
 >    text = text.replace(/##(.*?)##/g,
 >  '*<thing*="something">$1</thing>');
 
-Copypaste that under the last one (of the example i showed) and change:  
+Copypaste that ⤴ under the last one (of the example i showed) and change:  
 >> 1. things on the **(/##(.*?)##** section _(in this case, the **#'s**)_
 >> to make the effect trigger itself (example: _**$**_ text _**$**_)
 
