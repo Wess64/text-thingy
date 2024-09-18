@@ -68,7 +68,10 @@
             text = text.replace(/©(.*?)©/g, '<sup>$1</sup> ');
             
             // @at@
-            text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ');
+            text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ')
+
+            // ^spoiler^
+            text = text.replace(/^(.*?)\*\*/g, '<span class="spoiler">$1</span> ');
             
             // _1!(font)!_
             text = text.replace(/_1!(.*?)!_/g, '<code>$1</code>');
