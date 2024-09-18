@@ -4,7 +4,7 @@ This is just a random thing i made in like **8 hours**, and its just a text effe
 
 oh and also i made like 20 presets-
 
-## Okay, cool, but how to i make my own things? 
+#### Okay, cool, but how to i make my own things? 
 First, make a css style 
 
 > // .thing {  
@@ -27,4 +27,6 @@ Copypaste that under the last one (of the example i showed) and change:
 >> to make the effect trigger itself (example: _**$**_ text _**$**_)
 
 >> 2. **class=""** name on the ***<thing* class="something">** section to
->> the css thingy you made
+>> the css class you made (in this example, **test**)
+
+  now test your thing and it should work :)
