@@ -101,6 +101,9 @@
             
             // _text?
             text = text.replace(/_text?(.*?)_/g, '<input type="text"> ');
+
+            // _window:open?_
+            text = text.replace(/_window:open?(.*?)_/g, '<input type="button" onclick="OpenWindow()" title="Opens 100x100 window" value="&#128468;"> '); 
             
             return text;
         }
@@ -169,6 +172,11 @@
             let content = document.getElementById('editor').innerHTML;
             alert(content);
         }
+        let MyWindow;
+        function OpenWindow() {
+            myWindow = window.open("", "", "width=100, height=100");
+        }
+        
     </script>
 
     <br><br><br>
@@ -201,7 +209,8 @@
         _checkbox?_ makes a <input type="checkbox"><hr>
         _radio?_ makes a <input type="radio"><hr>
         _color?_ makes a <input type="color"><hr>
-        _file?_ makes a <input type="file">
+        _file?_ makes a <input type="file"><hr>
+        _window:open?_ makes a <input type="button" onclick="OpenWindow()" title="Opens 100x100 window" value="&#128468;"><hr>
     </details>
     </h3>
 </body>
