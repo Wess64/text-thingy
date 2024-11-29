@@ -19,7 +19,7 @@ With the css done, find the part wheres theres a bunch of stuff like this:
 
 > text
 > 
-> text = text.replace(/##(.*?)##/g,
+> text = text.replace(/##(.\*?)##/g,
 '*<thing*="something">$1</thing>');
 
 Copypaste that ⤴ under the last one (of the example i showed) and change:  
