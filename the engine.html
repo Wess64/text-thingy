@@ -3,112 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>discord 2</title>
+    <title>text (but cool)</title>
     <style>
         .bold {
             font-weight: bold;
         }
-        
+
         .highlight {
             background-color: yellow;
         }
-        
+
         .wave {
             animation: decrease 1s infinite;
+        }
+        
+        .fakeload {
+            text-decoration: underline overline;
+            animation: spin 0.5s infinite;
+            animation-timing-function: linear;
+        }
+
+        .rainbowText {
+            animation: text 3s infinite;
+        }
+
+        .rainbowBg {
+            animation: bg 3s infinite;
+        }
+        
+        .doesThings {
+            position: relative;
+            transform-origin: center;
         }
 
         .spoiler {
             background-color: black;
             color: black;
-            ṕadding: 3px;
+            border-radius: 3px;
+            padding: 2px;
         }
 
         .spoiler:hover {
             background-color: gray;
             color: white;
-        
+        }
+
+        .extraSpoiler {
+            background-color: #1CQD22;
+            color: #1C1D22;
+            border-radius: 3px;
+            padding: 2px;
+        }
+
+        .extraSpoiler:hover {
+            background-color: gray;
+            color: white;
+        }
+
         @keyframes decrease {
             0% { top: 0; }
             100% { top: -5px; }
         }
-        
+
+        @keyframes text {
+            0% { color: red; }
+            25% { color: blue; }
+            50% { color: yellow; }
+            75% { color: green; }
+            100% { color: purple; }
+        }
+
+        @keyframes bg {
+            0% { background-color: red; }
+            25% { background-color: blue; }
+            50% { background-color: yellow; }
+            75% { background-color: green; }
+            100% { background-color: purple; }
+        }
+
         .content-editable {
             width: 100%;
             white-space: pre-wrap;  /* To preserve new lines and spaces */
             color: #8F9095;
         }
+
+        /* Add a class for scaling elements */
+        .scale {
+            display: inline-block;
+            transform-origin: center;
+        }
+        
+        .spin {
+            animation: spin 1s infinite;
+            display: inline-block;
+            position: relative;
+            transform-origin: center;
+        }
+        
+        @keyframes spin {
+            0% {transform: rotate(0deg);}
+            25% {transform: rotate(90deg);}
+            50% {transform: rotate(180deg);}
+            75% {transform: rotate(270deg);}
+            100% {transform: rotate(360deg);}
+        }
     </style>
 </head>
 <body style="background-color:#1D1C22;">
-    <div style="padding:60px;">
-        <fieldset style="padding:none; border:none;"><p id="editor" contenteditable="true" class="content-editable">Text...</p></fieldset>
-    </div>
-    
+    <h1 contenteditable="true" style="color:#F3F3F4; padding:none;">Heading i think</h1>
+    <p id="editor" contenteditable="true" class="content-editable">Write here.. or whatever..</p>
+
     <h2 style="color:#8F9095;">≫<button onclick="showContent()" style="color:#8F9095; border:none; background-color:#1D1C22;">Source Html</button></h2>
+
     <script>
         // Function to parse and apply formatting
         function parseContent(text) {
             // **bold**
             text = text.replace(/\*\*(.*?)\*\*/g, '<span class="bold">$1</span> ');
-            
+
             // ~~highlight~~
             text = text.replace(/~~(.*?)~~/g, '<span class="highlight">$1</span> ');
-            
+
             // ``next``
             text = text.replace(/``(.*?)``/g, '<br>$1 ');
-            
+
             // #button#
             text = text.replace(/#(.*?)#/g, '<button>$1</button> ');
-            
+
             // ®sub®
             text = text.replace(/®(.*?)®/g, '<sub>$1</sub> ');
-            
+
             // ©sup©
             text = text.replace(/©(.*?)©/g, '<sup>$1</sup> ');
-            
-            // @at@
-            text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ')
 
-            // ^spoiler^
-            text = text.replace(/^(.*?)^/g, '<span class="spoiler">$1</span> ');
-            
+            // @at@
+            text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ');
+
+            // spoiler
+            text = text.replace(/°°(.*?)°°/g, '<span class="spoiler">$1</span> ');
+            text = text.replace(/_°(.*?)_/g, '<span class="extraSpoiler">$1</span> ');
+
             // _1!(font)!_
             text = text.replace(/_1!(.*?)!_/g, '<code>$1</code>');
-            
+
             // _2!(strikethrough)!_
             text = text.replace(/_2!(.*?)!_/g, '<s>$1</s>');
-            
+
             // _3!(underline)!_
             text = text.replace(/_3!(.*?)!_/g, '<u>$1</u>');
-            
+
             // _4!(italic)!_
             text = text.replace(/_4!(.*?)!_/g, '<dfn>$1</dfn>');
-            
-            // _checkbox?
-            text = text.replace(/_checkbox?(.*?)_/g, '<input type="checkbox"> ');
-            
-            // _file?
-            text = text.replace(/_file?(.*?)_/g, '<input type="file"> ');
-            
-            // _number?
-            text = text.replace(/_number?(.*?)_/g, '<input type="number" min="0" max="10">');
-            
-            // _color?
-            text = text.replace(/_color?(.*?)_/g, '<input type="color"> ');
-            
-            // _radio?
-            text = text.replace(/_radio?(.*?)_/g, '<input type="radio"> ');
-            
-            // _text?
-            text = text.replace(/_text?(.*?)_/g, '<input type="text"> ');
 
-            // _window:open?_
-            text = text.replace(/_window:open?(.*?)_/g, '<input type="button" onclick="OpenWindow()" title="Opens 100x100 window" value="&#128468;"> '); 
+            // _scale:x?
+            text = text.replace(/_scale:(\d+)?(.*?)_/g, '<span style="transform:scale($1);">$2</span> ');
             
+            // funny kazuya gaem arrow thingymajigs
+            text = text.replace(/tarrow:white"(.*?)"/g, '<strong style="transform:rotate($1deg);" id="doesThings">➡︎</strong> ');
+            
+            /* _?dropdown: */
+            text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select>');
+            
+            // _?summary:
+            text = text.replace(/_?_?summary:"(.*?)":"(.*?)"/g, '<details><summary>$1</summary>$2</details> ');
+            
+            // spin
+            text = text.replace(/_?_!spin:(.*?)_/g, '<span class="spin">$1</span> ');;
+            
+            // list with funny numbers
+text = text.replace(/_ol:("(.*?)"(?::"(.*?)")*)_/g, function(_, list) {
+    let items = list.split(':"').map(item => item.replace(/"/g, ''));
+    return `<ol>` + items.map(item => `<li>${item}</li>`).join('') + `</ol `;
+});
+
+// list with •
+text = text.replace(/_ul:("(.*?)"(?::"(.*?)")*)_/g, function(_, list) {
+    let items = list.split(':"').map(item => item.replace(/"/g, ''));
+    return `<ul>` + items.map(item => `<li>${item}</li>`).join('') + `</ul><br>`;
+});
+
+// _abbr:_
+text = text.replace(/_abbr:"(.*?)":"(.*?)"_/g, '<abbr title="$2">$1</abbr> ');
+
+// voice thibg
+text = text.replace(/_voice:"(.*?)"_/g, function(_, title) {
+    return `<abbr title="${title}" class="voice-icon">🎤</abbr> `;
+});
+
+// fakeload
+text = text.replace(/_fakeload_/g, '<span class="spin" class="fakeload">⟳</span> ');
+
+// hr and br things
+text = text.replace(/_hr_/g, '<br><hr><br> ');
+text = text.replace(/_br_/g, '<br> ');
+
             return text;
         }
 
-        // Save and restore cursor position
         function saveSelection(containerEl) {
             let selection = window.getSelection();
             if (selection.rangeCount === 0) return null;
@@ -118,7 +209,7 @@
             preCaretRange.selectNodeContents(containerEl);
             preCaretRange.setEnd(range.endContainer, range.endOffset);
 
-            return preCaretRange.toString().length;  // Returns the cursor position
+            return preCaretRange.toString().length; 
         }
 
         function restoreSelection(containerEl, savedPosition) {
@@ -148,23 +239,20 @@
             sel.removeAllRanges();
             sel.addRange(range);
         }
-
-        // Event listener to handle content and format typing
-        document.getElementById('editor').addEventListener('input', function() {
+ document.getElementById('editor').addEventListener('input', function () {
             let editor = this;
             let content = editor.innerHTML;
 
             // Save cursor position
             let cursorPos = saveSelection(editor);
 
-            // Parse the content for **bold**, __italic__, and ~~highlight~~
+            // parse the content for **bold**, __italic__, and ~~highlight~~
             let parsedContent = parseContent(content);
 
             if (parsedContent !== content) {
-                editor.innerHTML = parsedContent;  // Update the content only if changed
+                editor.innerHTML = parsedContent; 
             }
 
-            // Restore cursor position
             restoreSelection(editor, cursorPos);
         });
 
@@ -172,15 +260,12 @@
             let content = document.getElementById('editor').innerHTML;
             alert(content);
         }
-        let MyWindow;
-        function OpenWindow() {
-            myWindow = window.open("", "", "width=100, height=100");
-        }
-        
     </script>
-
+    
     <br><br><br>
-    <p style="color:white;">Here are the effects <small style="color:gray;"></p>
+    <p style="color:white;">Here are the effects</p>
+    </body>
+    </html>
     <h3 style="color:white;">
     <details>
         <summary>Main Customs</summary><hr>
@@ -191,7 +276,6 @@
     ®<sub>sub</sub>®<hr>
     ©<sup>sup</sup>©<hr>
     @<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@at</mark>@<hr>
-    ^<span class="spoiler">spoiler</span>^<hr>
     </details>
     
     <details>
@@ -210,7 +294,8 @@
         _radio?_ makes a <input type="radio"><hr>
         _color?_ makes a <input type="color"><hr>
         _file?_ makes a <input type="file"><hr>
-        _window:open?_ makes a <input type="button" onclick="OpenWindow()" title="Opens 100x100 window" value="&#128468;"><hr>
+        _dropdown:"hi":"hey":"hello"_ makes <select><option>hi</option><option>hey</option><option>hello</option></select><hr>
+        _scale:2_ makes it <i style="transform:scale(5);">big</i><hr>
     </details>
     </h3>
 </body>
