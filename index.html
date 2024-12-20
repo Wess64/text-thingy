@@ -47,6 +47,12 @@
             background-color: gray;
             color: white;
         }
+        
+        #movable-text {
+            position: relative;
+            display: inline-block;
+            overflow: visible;
+        }
 
         .extraSpoiler {
             background-color: #1CQD22;
@@ -83,6 +89,30 @@
         .reaction:hover {
          border-color: #23272a;
          }
+         
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 10px;
+    background: #1D1C22;
+    border-radius: 10px;
+    outline: none;
+  }
+ input[type="range"]::-webkit-slider-runnable-track {
+    background: #1D1C22;
+    height: 10px;
+    border-radius: 10px;
+  }
+
+  input[type="range"]::-moz-range-progress {
+     background: #1D1C22;
+     height: 10px;
+     border-radius: 10px;
+  }   
+      
+  input[type="range"]::-ms-fill-lower {
+  background: #1D1C22; 
+  }
 
         .reaction.active {
          border-color: #7289da;
@@ -165,8 +195,30 @@
     </style>
 </head>
 <body style="background-color:#1D1C22;">
-    <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11;">Write here.. or whatever..</p>
-    <br>
+    <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11;"></p>
+<textarea id="plain-text-box" style="display:none;"></textarea>
+
+<script>
+  window.onload = function() {
+    const savedText = localStorage.getItem('effectsText');
+    const effectBox = document.getElementById('editor');
+    
+    if (savedText) {
+      effectBox.innerHTML = savedText;
+      updatePlainText();
+    }
+
+    effectBox.addEventListener('input', updatePlainText);
+  };
+
+  function updatePlainText() {
+    const effectBox = document.getElementById('editor');
+    const plainTextBox = document.getElementById('plain-text-box');
+
+    plainTextBox.textContent = effectBox.innerText;
+    localStorage.setItem('effectsText', effectBox.innerHTML);
+  }
+</script>
     <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494">Syntax</a>
 
     <script>
@@ -226,6 +278,21 @@
             
             // _!emoji
             text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div>');
+            
+            // _!marquee
+            text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee> ');
+            
+            // _checkbox_
+            text = text.replace(/_!checkbox_/g, '<input type="checkbox"');
+            
+            // _slider
+            text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<input type="range" min="$1" max="$2" value="$3"> ');
+            
+            // _switch
+            text = text.replace(/_switch_/g, '<input type="range" min="0" max="1" value="0" style="width:30px;"> ');
+            
+            // _1!(font)!_
+            text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<code>$1</code>');
             
             // spin
             text = text.replace(/_?_!spin:(.*?)_/g, '<span class="spin">$1</span> ');;
@@ -385,4 +452,6 @@ function replaceButtonWithImage(buttonElement, imageSrc) {
 
   parent.replaceChild(img, buttonElement);
 }
+
+</script>
 </script>
