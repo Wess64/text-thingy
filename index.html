@@ -32,6 +32,7 @@
         }
 
         .doesThings {
+            display: inline-block;
             position: relative;
             transform-origin: center;
         }
@@ -310,10 +311,10 @@
             text = text.replace(/_4!(.*?)!_/g, '<dfn>$1</dfn> ');
 
             // _scale:x?
-            text = text.replace(/_scale:"(\d+)":"(.*?)"_/g, '<span style="transform:scale($1);">$2</span> ');
+            text = text.replace(/_scale:(\d+)?(.*?)_/g, '<span style="transform:scale($1);">$2</span> ');
 
             // funny arrow
-            text = text.replace(/tarrow:"(.*?)"/g, '<strong style="transform:rotate($1deg);" id="doesThings">➡︎</strong> ');
+            text = text.replace(/tarrow:"(.*?)"/g, '<span style="transform:rotate($1deg);" class="doesThings" contenteditable="false">➡︎</span> ');
 
             /* _?dropdown: */
             text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select> ');
