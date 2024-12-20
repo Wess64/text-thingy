@@ -200,8 +200,16 @@
     <hr style="border-color:#0D0C11; border-radius:5px;">
     <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button> 
     <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
-    <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button>
+    <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button><br><br>
+    <button onclick="copyToClipboard()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᵉˣᵖᵒʳᵗ</button>
+    <button onclick="showPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᶦᵐᵖᵒʳᵗ</button>
     <input type="file" id="file-input" onchange="importContent(event)" style="display:none;">
+    
+    <div id="paste-area" style="display:none; margin-top:10px;">
+        <textarea id="clipboard-text" style="width:100%; height:50px; border-radius:5px; background-color:#0D0C11; color:white; border:none; padding:5px;"></textarea>
+        <button onclick="insertFromPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; margin-top:5px;">ₚₐₛₜₑ</button>
+        <button onclick="hidePasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; margin-top:5px;">𝒸ₐₙ𝒸ₑₗ</button>
+    </div>
     
     <textarea id="plain-text-box" style="display:none;"></textarea>
 
@@ -266,9 +274,42 @@
           reader.readAsText(file);
         }
       }
+
+      // Function to copy content to clipboard
+      function copyToClipboard() {
+        const effectBox = document.getElementById('editor');
+        const content = effectBox.innerHTML; // Get the editor's content
+
+        navigator.clipboard.writeText(content).then(() => {
+          alert('copied!');
+        }).catch(err => {
+          alert('failed.. ', err);
+        });
+      }
+
+      // Function to show the paste area
+      function showPasteArea() {
+        const pasteArea = document.getElementById('paste-area');
+        pasteArea.style.display = 'block';
+        }
+
+      // Function to insert content from the paste area into the editor
+      function insertFromPasteArea() {
+        const clipboardText = document.getElementById('clipboard-text').value;
+        const effectBox = document.getElementById('editor');
+        effectBox.innerHTML = clipboardText;
+        updatePlainText();
+        hidePasteArea();
+      }
+
+      // Function to hide the paste area
+      function hidePasteArea() {
+        const pasteArea = document.getElementById('paste-area');
+        pasteArea.style.display = 'none';
+      }
     </script>
 </body>
-    <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
+    <br><br><a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
 
     <script>
         // Function to parse and apply formatting
