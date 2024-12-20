@@ -16,7 +16,7 @@
         .wave {
             animation: decrease 1s infinite;
         }
-        
+
         .fakeload {
             text-decoration: underline overline;
             animation: spin 0.5s infinite;
@@ -30,7 +30,7 @@
         .rainbowBg {
             animation: bg 3s infinite;
         }
-        
+
         .doesThings {
             position: relative;
             transform-origin: center;
@@ -47,7 +47,7 @@
             background-color: gray;
             color: white;
         }
-        
+
         #movable-text {
             position: relative;
             display: inline-block;
@@ -71,7 +71,7 @@
            animation: pulse 1s infinite;
            color: gray;
         }
-        
+
         .reaction {
           display: inline-flex;
           align-items: center;
@@ -89,7 +89,7 @@
         .reaction:hover {
          border-color: #23272a;
          }
-         
+
   input[type="range"] {
     -webkit-appearance: none;
     width: 100px;
@@ -109,7 +109,7 @@
      height: 10px;
      border-radius: 10px;
   }   
-      
+
   input[type="range"]::-ms-fill-lower {
   background: #1D1C22; 
   }
@@ -142,7 +142,7 @@
          height: 100%;   
          object-fit: cover;
        }
-        
+
            @keyframes pulse {
            0% { opacity: 0; }
            50% { opacity: 1; }
@@ -180,14 +180,14 @@
             display: inline-block;
             transform-origin: center;
         }
-        
+
         .spin {
             animation: spin 1s infinite linear;
             display: inline-block;
             position: relative;
             transform-origin: center;
         }
-        
+
         @keyframes spin {
             0% {transform: rotate(0deg;)}
             100% {transform: rotate(360deg);}
@@ -195,31 +195,79 @@
     </style>
 </head>
 <body style="background-color:#1D1C22;">
-    <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:3px; border-radius:5px;"></p>
-<textarea id="plain-text-box" style="display:none;"></textarea>
-
-<script>
-  window.onload = function() {
-    const savedText = localStorage.getItem('effectsText');
-    const effectBox = document.getElementById('editor');
+    <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
+    <hr style="border-color:#0D0C11; border-radius:5px;">
+    <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button> 
+    <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
+    <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button>
+    <input type="file" id="file-input" onchange="importContent(event)" style="display:none;">
     
-    if (savedText) {
-      effectBox.innerHTML = savedText;
-      updatePlainText();
-    }
+    <textarea id="plain-text-box" style="display:none;"></textarea>
 
-    effectBox.addEventListener('input', updatePlainText);
-  };
+    <script>
+      window.onload = function() {
+        const savedText = localStorage.getItem('effectsText');
+        const effectBox = document.getElementById('editor');
+        
+        if (savedText) {
+          effectBox.innerHTML = savedText;
+          updatePlainText();
+        }
 
-  function updatePlainText() {
-    const effectBox = document.getElementById('editor');
-    const plainTextBox = document.getElementById('plain-text-box');
+        effectBox.addEventListener('input', updatePlainText);
+      };
 
-    plainTextBox.textContent = effectBox.innerText;
-    localStorage.setItem('effectsText', effectBox.innerHTML);
-  }
-</script>
-    <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494">Syntax</a>
+      function updatePlainText() {
+        const effectBox = document.getElementById('editor');
+        const plainTextBox = document.getElementById('plain-text-box');
+
+        plainTextBox.textContent = effectBox.innerText;
+        localStorage.setItem('effectsText', effectBox.innerHTML);
+      }
+
+      function clearStorage() {
+        localStorage.removeItem('effectsText');
+        const effectBox = document.getElementById('editor');
+        effectBox.innerHTML = '';  // Clear the content in the editor
+        document.getElementById('plain-text-box').textContent = '';  // Clear the plain text as well
+      }
+
+      function exportContent() {
+        const effectBox = document.getElementById('editor');
+        const content = effectBox.innerHTML;  // Get the content of the editor
+
+        const blob = new Blob([content], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'editor_content.txt';  // Set the default file name
+        link.click();
+      }
+
+      // Function to trigger the file input when the "Import" button is clicked
+      function triggerFileInput() {
+        document.getElementById('file-input').click();
+      }
+
+      // Function to import the content from the uploaded file
+      function importContent(event) {
+        const file = event.target.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            const content = e.target.result;
+            const effectBox = document.getElementById('editor');
+            effectBox.innerHTML = content;  // Insert the content into the editor
+            updatePlainText();
+          };
+          
+          reader.readAsText(file);
+        }
+      }
+    </script>
+</body>
+    <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
 
     <script>
         // Function to parse and apply formatting
@@ -263,40 +311,40 @@
 
             // _scale:x?
             text = text.replace(/_scale:(\d+)?(.*?)_/g, '<span style="transform:scale($1);">$2</span> ');
-            
+
             // funny arrow
             text = text.replace(/tarrow:white"(.*?)"/g, '<strong style="transform:rotate($1deg);" id="doesThings">➡︎</strong> ');
-            
+
             /* _?dropdown: */
             text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select>');
-            
+
             // _?summary:
             text = text.replace(/_?_?summary:"(.*?)":"(.*?)"/g, '<details><summary>$1</summary>$2</details> ');
-            
+
             // _?reaction
             text = text.replace(/_?reaction:"(.*?)"/g, '<div class="reaction" data-count="0" onclick="toggleCounter(this)"><span class="label">$1</span><span class="counter">0</span></div>');
-            
+
             // _!emoji
             text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div>');
-            
+
             // _!marquee
-            text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<p contenteditable="false">╎</p><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><p contenteditable="false">╎</p> ');
-            
+            text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<sup contenteditable="false">╎</sup><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><sup contenteditable="false">╎</sup> ');
+
             // _checkbox_
             text = text.replace(/_!checkbox_/g, '<input type="checkbox">');
-            
+
             // _slider
             text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<input type="range" min="$1" max="$2" value="$3"> ');
-            
+
             // _switch
             text = text.replace(/_switch_/g, '<input type="range" min="0" max="1" value="0" style="width:30px;"> ');
-            
+
             // _1!(font)!_
             text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<code>$1</code>');
-            
+
             // spin
             text = text.replace(/_?_!spin:(.*?)_/g, '<span class="spin">$1</span> ');;
-            
+
             // list with funny numbers
 text = text.replace(/_ol:("(.*?)"(?::"(.*?)")*)_/g, function(_, list) {
     let items = list.split(':"').map(item => item.replace(/"/g, ''));
@@ -387,7 +435,7 @@ text = text.replace(/_br_/g, '<br> ');
             let content = document.getElementById('editor').innerHTML;
             alert(content);
         }
-        
+
         function toggleCounter(element) {
          const counter = element.querySelector('.counter');
           let count =         parseInt(element.getAttribute('data-count'), 10) || 0;
