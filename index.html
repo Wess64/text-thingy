@@ -313,7 +313,7 @@
             text = text.replace(/_scale:"(\d+)":"(.*?)"_/g, '<span style="transform:scale($1);">$2</span> ');
 
             // funny arrow
-            text = text.replace(/tarrow:white"(.*?)"/g, '<strong style="transform:rotate($1deg);" id="doesThings">➡︎</strong> ');
+            text = text.replace(/tarrow:"(.*?)"/g, '<strong style="transform:rotate($1deg);" id="doesThings">➡︎</strong> ');
 
             /* _?dropdown: */
             text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select> ');
