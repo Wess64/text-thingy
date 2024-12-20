@@ -298,16 +298,16 @@
             text = text.replace(/_°(.*?)_/g, '<span class="extraSpoiler">$1</span> ');
 
             // _1!(font)!_
-            text = text.replace(/_1!(.*?)!_/g, '<code>$1</code>');
+            text = text.replace(/_1!(.*?)!_/g, '<code>$1</code> ');
 
             // _2!(strikethrough)!_
-            text = text.replace(/_2!(.*?)!_/g, '<s>$1</s>');
+            text = text.replace(/_2!(.*?)!_/g, '<s>$1</s> ');
 
             // _3!(underline)!_
-            text = text.replace(/_3!(.*?)!_/g, '<u>$1</u>');
+            text = text.replace(/_3!(.*?)!_/g, '<u>$1</u> ');
 
             // _4!(italic)!_
-            text = text.replace(/_4!(.*?)!_/g, '<dfn>$1</dfn>');
+            text = text.replace(/_4!(.*?)!_/g, '<dfn>$1</dfn> ');
 
             // _scale:x?
             text = text.replace(/_scale:"(\d+)":"(.*?)"_/g, '<span style="transform:scale($1);">$2</span> ');
@@ -316,22 +316,22 @@
             text = text.replace(/tarrow:white"(.*?)"/g, '<strong style="transform:rotate($1deg);" id="doesThings">➡︎</strong> ');
 
             /* _?dropdown: */
-            text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select>');
+            text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select> ');
 
             // _?summary:
             text = text.replace(/_?_?summary:"(.*?)":"(.*?)"/g, '<details><summary>$1</summary>$2</details> ');
 
             // _?reaction
-            text = text.replace(/_?reaction:"(.*?)"/g, '<div class="reaction" data-count="0" onclick="toggleCounter(this)"><span class="label">$1</span><span class="counter">0</span></div>');
+            text = text.replace(/_?reaction:"(.*?)"/g, '<div class="reaction" data-count="0" onclick="toggleCounter(this)"><span class="label">$1</span><span class="counter">0</span></div> ');
 
             // _!emoji
-            text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div>');
+            text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div> ');
 
             // _!marquee
             text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<sup contenteditable="false">╎</sup><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><sup contenteditable="false">╎</sup> ');
 
             // _checkbox_
-            text = text.replace(/_!checkbox_/g, '<input type="checkbox">');
+            text = text.replace(/_!checkbox_/g, '<input type="checkbox"> ');
 
             // _slider
             text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<input type="range" min="$1" max="$2" value="$3"> ');
@@ -340,7 +340,7 @@
             text = text.replace(/_switch_/g, '<input type="range" min="0" max="1" value="0" style="width:30px;"> ');
 
             // _1!(font)!_
-            text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<code>$1</code>');
+            text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<code>$1</code> ');
 
             // spin
             text = text.replace(/_?_!spin:(.*?)_/g, '<span class="spin">$1</span> ');;
