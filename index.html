@@ -280,7 +280,7 @@
             text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div>');
             
             // _!marquee
-            text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee> ');
+            text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<p contenteditable="false">╎</p><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><p contenteditable="false">╎</p> ');
             
             // _checkbox_
             text = text.replace(/_!checkbox_/g, '<input type="checkbox">');
