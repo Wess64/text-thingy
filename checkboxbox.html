@@ -6,19 +6,8 @@
   <title>☑︎</title>
   <style>
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      padding: 30px;
       background: #1e1e2f;
-      color: white;
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    #controls {
-      margin-bottom: 20px;
     }
 
     .grid {
@@ -27,18 +16,14 @@
     }
 
     input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
-      border: 1px solid #666;
-      cursor: pointer;
-    }
+      width: 16px;
+      height: 16px;
+    }    
   </style>
 </head>
 <body>
-  <div id="controls">
-    <button onclick="clearGrid()">☒</button>
-    <input type="number" id="gridSize" min="1" max="10" value="5" onkeyup="generateGrid()">
-  </div>
+    <button onclick="clearGrid()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:gray;">☒</button>
+    <input type="number" id="gridSize" min="1" max="10" value="5" onkeyup="generateGrid()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">
   <div id="grid" class="grid"></div>
 
   <script>
@@ -65,14 +50,10 @@
 
     function clearGrid() {
       document.querySelectorAll('.grid input[type="checkbox"]').forEach(checkbox => {
-        checkbox.checked = false; // Uncheck all blocks
-        checkbox.className = ''; // Reset block type
-        checkbox.style.background = '#444'; // Reset color
- 
+        checkbox.checked = false;
       });
     }
 
-    // Initialize grid on load
     generateGrid();
   </script>
 </body>
