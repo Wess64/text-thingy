@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☑︎</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #1e1e2f;
+      color: white;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #controls {
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      padding: none;
+    }
+
+    input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      border: 1px solid #666;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <button onclick="clearGrid()">☒</button>
+    <input type="number" id="gridSize" min="1" max="10" value="5" onkeyup="generateGrid()">
+  </div>
+  <div id="grid" class="grid"></div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const gridSizeInput = document.getElementById('gridSize');
+
+    function generateGrid() {
+      const size = parseInt(gridSizeInput.value, 10);
+      grid.innerHTML = ''; // Clear existing grid
+      grid.style.gridTemplateColumns = `repeat(${size}, 15px)`;
+
+      for (let i = 0; i < size * size; i++) {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+
+ checkbox.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          cycleBlockType(checkbox);
+        });
+
+        grid.appendChild(checkbox);
+      }        
+    }
+
+    function clearGrid() {
+      document.querySelectorAll('.grid input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false; // Uncheck all blocks
+        checkbox.className = ''; // Reset block type
+        checkbox.style.background = '#444'; // Reset color
+ 
+      });
+    }
+
+    // Initialize grid on load
+    generateGrid();
+  </script>
+</body>
+</html>
