@@ -197,6 +197,8 @@
 </head>
 <body style="background-color:#1D1C22;">
     <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
+    
+    
     <hr style="border-color:#0D0C11; border-radius:5px;">
     <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button> 
     <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
@@ -309,7 +311,8 @@
       }
     </script>
 </body>
-    <br><br><a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a> <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
+    <br><br><a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
+
     <script>
         // Function to parse and apply formatting
         function parseContent(text) {
@@ -368,6 +371,9 @@
             // _!emoji
             text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div> ');
 
+            // minigame
+            text = text.replace(/_!!minigame1_/g, '<iframe src="checkboxbox.html" style="width:200px; height:200px; border:none; border-radius: 5px;" allowfullscreen="true"></iframe>');
+            
             // _!marquee
             text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<sup contenteditable="false">╎</sup><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><sup contenteditable="false">╎</sup> ');
 
