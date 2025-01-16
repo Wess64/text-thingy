@@ -883,66 +883,103 @@ function executeCommand(command) {
       `;
       warnCount++;
       break;
+    switch (command) {
     case 'log':
-      messageClass = 'log';
-      break;
+        messageClass = 'log';
+        break;
     case 'wrn':
-      messageClass = 'wrn';
-      message = `⚠▶ ${message}`;
-      warnCount++;
-      break;
+        messageClass = 'wrn';
+        message = `⚠▶ ${message}`;
+        warnCount++;
+        break;
     case 'err':
-      messageClass = 'err';
-      message = `✘▶ ${message}`;
-      errorCount++;
-      break;
-    case 'clr': 
-      outputArea.innerHTML = '';
-      errorCount = 0;
-      warnCount = 0;
-      updateCountDisplay();
-      return;
-    case 'store': 
-      storedValue = message; // Update the value
-      localStorage.setItem('storedValue', storedValue); // Save to local storage
-      messageClass = 'store';
-      message = `⌨︎︎: ${storedValue}`;
-      break;
-    case 'reset': // Reset stored or input
-      const resetTarget = args[0] || 'both';
-      if (resetTarget === 'stored' || resetTarget === 'both') {
-        storedValue = null;
-        localStorage.removeItem('storedValue'); // Remove from local storage
-        appendToOutput(`☒▶ deleted stored value`, 'reset');
-      }
-      if (resetTarget === 'input' || resetTarget === 'both') {
-        userInput = null;
-        appendToOutput(`☒▶ deleted user input`, 'reset');
-      }
-      return;
-    case 'repeat':
-      const repeatTimes = parseInt(args[0], 10);
-      const repeatCommand = args.slice(1).join(' ');
-      if (!isNaN(repeatTimes) && repeatCommand) {
-        for (let i = 0; i < repeatTimes; i++) {
-          executeCommand(repeatCommand);
-        }
-      } else {
         messageClass = 'err';
-        message = `⚠︎ Invalid repeat (you have to provide a number)`;
-      }
-      return; 
+        message = `✘▶ ${message}`;
+        errorCount++;
+        break;
+    case 'clr':
+        outputArea.innerHTML = '';
+        errorCount = 0;
+        warnCount = 0;
+        updateCountDisplay();
+        return;
+    case 'store':
+        storedValue = message; // Update the value
+        localStorage.setItem('storedValue', storedValue); // Save to local storage
+        messageClass = 'store';
+        message = `⌨︎︎: ${storedValue}`;
+        break;
+    case 'reset': // Reset stored or input
+        const resetTarget = args[0] || 'both';
+        if (resetTarget === 'stored' || resetTarget === 'both') {
+            storedValue = null;
+            localStorage.removeItem('storedValue'); // Remove from local storage
+            appendToOutput(`☒▶ deleted stored value`, 'reset');
+        }
+        if (resetTarget === 'input' || resetTarget === 'both') {
+            userInput = null;
+            appendToOutput(`☒▶ deleted user input`, 'reset');
+        }
+        return;
+    case 'repeat':
+        const repeatTimes = parseInt(args[0], 10);
+        const repeatCommand = args.slice(1).join(' ');
+        if (!isNaN(repeatTimes) && repeatCommand) {
+            for (let i = 0; i < repeatTimes; i++) {
+                executeCommand(repeatCommand);
+            }
+        } else {
+            messageClass = 'err';
+            message = `⚠︎ Invalid repeat (you have to provide a number)`;
+        }
+        return;
     case 'input':
-      const promptMessage = args.join(' ').replace(/['"]+/g, '');
-      userInput = prompt(promptMessage);
-      messageClass = 'input';
-      message = `${userInput} (⌨︎︎)`;
-      break;
-    // Other commands here...
+        const promptMessage = args.join(' ').replace(/['"]+/g, '');
+        userInput = prompt(promptMessage);
+        messageClass = 'input';
+        message = `${userInput} (⌨︎︎)`;
+        break;
+    case 'random':
+        const min = parseInt(args[0], 10);
+        const max = parseInt(args[1], 10);
+        if (!isNaN(min) && !isNaN(max)) {
+            messageClass = 'random';
+            message = `Random number: ${Math.floor(Math.random() * (max - min + 1)) + min}`;
+        } else {
+            messageClass = 'err';
+            message = `⚠︎ Invalid random range (provide two valid numbers)`;
+        }
+        break;
+    case 'dbg':
+        messageClass = 'dbg';
+        message = `≫ ${message}`;
+        break;
+    case 'popup':
+        const popupMessage = args.join(' ').replace(/['"]+/g, '');
+        alert(popupMessage); // Display a popup alert
+        messageClass = 'popup';
+        message = `Popup displayed: ${popupMessage}`;
+        break;
+    case 'choice':
+        const confirmMessage = args.join(' ').replace(/['"]+/g, '');
+        if (confirm(confirmMessage)) {
+            messageClass = 'confirm';
+            message = `✔ ${confirmMessage}`;
+        } else {
+            messageClass = 'confirm';
+            message = `✘ ${confirmMessage}`;
+        }
+        break;
+    case 'hahhs':
+        const promptMessageForUser = args.join(' ').replace(/['"]+/g, '');
+        userInput = prompt(promptMessageForUser);
+        messageClass = 'prompt';
+        message = `⌨︎︎: ${userInput}`;
+        break;
     default:
-      messageClass = 'unknown';
-      message = ` ⁉️▶ |${command}| `;
-  }
+        messageClass = 'unknown';
+        message = ` ⁉️▶ |${command}| `;
+}
 
   function updateCountDisplay() {
     const countDisplay = document.getElementById('countDisplay');
