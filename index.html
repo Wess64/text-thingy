@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>text (but cool)</title>
     <style>
+        body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+         overflow: visible;
+         background-color: #333;
+         color: white;
+        }
+        
         .bold {
             font-weight: bold;
         }
@@ -193,18 +202,142 @@
             0% {transform: rotate(0deg;)}
             100% {transform: rotate(360deg);}
         }
+        
+        .console-window {
+  display: none;
+  width: 350px;
+  height: 350px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #222;
+  border: 2px solid #555;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  resize: both;
+  overflow: auto;    
+}
+
+.countDisplay {
+  background-color: #1D1C22;
+  color: gray;
+  padding: 5px;
+  border-radius: 5px;
+  text-decoration-line: underline;
+  text-decoration-color: #1D1c22;
+  }
+
+.console-header {
+  background-color: #444;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  cursor: move;
+}
+
+.console-output {
+  background-color: #111;
+  padding: 10px;
+  margin-bottom: 10px;
+  height: calc(100% - 140px); /* Dynamically adjust height */
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+.console-input {
+  background-color: #222;
+  color: white;
+  width: calc(100% - 24px);
+  padding: 10px;
+  border: none;
+  font-family: monospace;
+  font-size: 14px;
+  border-radius: 5px;
+  resize: none;
+  text-decoration-line: underline;
+  text-decoration-color: #1D1C22;
+}
+
+#output .log {
+  color: #F2f3EE;
+  background-color: #1d1c22;
+}
+
+#output .wrn {
+  color: white;
+  background-color: #ddaa00;
+  border-radius: 50px;
+}
+
+#output .err {
+  color: white;
+  background-color: #ff5555;
+  border-radius: 50px;
+}
+
+#output .dbg {
+  color: #9cdcfe;
+  background-color: gray;
+}
+
+#output .store {
+  color: #c586c0;
+  background-color: white;
+}
+
+#output .input {
+  color: #d7ba7d;
+}
+
+#output .choice {
+  color: #d7ba7d;
+}
+
+#output .random {
+  color: #d7ba7d;
+}
+
+#output .unknown {
+  color: #ff4500;
+  display: inline-block;
+  position: relative;
+  transform-origin: center;
+  animation: float 5s infinite;
+}
+
+@keyframes float {
+  0% { top: -3px; }
+  25% { top: 0px; }
+  50% { top: 3px; }
+  75% { top: 0px; }
+}  
     </style>
 </head>
 <body style="background-color:#1D1C22;">
+    <div id="console" class="console-window"resizeable="true">
+    <span class="close-button" id="closeButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">✘</span>
+    <div class="console-header">ｃｏｎｓｏｌｅ</div>
+    <div class="console-output" id="output">
+▀█▀⠀█░█⠀█⠀█▄░█⠀█▀▀⠀█▄█
+░█░⠀█▀█⠀█⠀█░▀█⠀█▄█⠀░█░
+════⠀c⠀o⠀n⠀s⠀o⠀l⠀e⠀═════
+
+‘hehe funny code thingy’ - Wess64
+    </div>
+    <span><input type="text" class="console-input" id="inputField" placeholder="type here or something..."><span class="run-button" id="runButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">ʳᵘⁿ ⇗ <span id="countDisplay" class="countDisplay">[ ]</span></span></span>
+  </div>
     <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
-    
+  <span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
     
     <hr style="border-color:#0D0C11; border-radius:5px;">
     <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button> 
     <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
     <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button><br><br>
     <button onclick="copyToClipboard()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᵉˣᵖᵒʳᵗ</button>
-    <button onclick="showPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᶦᵐᵖᵒʳᵗ</button>
+    <button onclick="showPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᶦᵐᵖᵒʳᵗ</button><br><br>
     <input type="file" id="file-input" onchange="importContent(event)" style="display:none;">
     
     <div id="paste-area" style="display:none; margin-top:10px;">
@@ -214,7 +347,6 @@
     </div>
     
     <textarea id="plain-text-box" style="display:none;"></textarea>
-
     <script>
       window.onload = function() {
         const savedText = localStorage.getItem('effectsText');
@@ -311,7 +443,8 @@
       }
     </script>
 </body>
-    <br><br><a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
+    <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
+    <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
 
     <script>
         // Function to parse and apply formatting
@@ -385,9 +518,136 @@
 
             // _switch
             text = text.replace(/_switch_/g, '<input type="range" min="0" max="1" value="0" style="width:30px;"> ');
+                        
+            // square
+text = text.replace(/_!!square_/g, () => {
+    // Create the square div dynamically
+    const squareDiv = document.createElement('div');
+    squareDiv.id = 'square';
+    squareDiv.innerHTML = '';
+    squareDiv.style.position = 'absolute';
+    squareDiv.style.width = '40px';
+    squareDiv.style.height = '40px';
+    squareDiv.style.backgroundColor = 'red';
+    squareDiv.style.color = 'white';
+    squareDiv.style.textAlign = 'center';
+    squareDiv.style.lineHeight = '20px';
+    squareDiv.style.cursor = 'grab';
+    squareDiv.style.borderRadius = '5px';
+    squareDiv.style.zIndex = '10000'; // Ensure it's on top of other elements
+    
+    // Append square to the body (not to the text container)
+    document.body.appendChild(squareDiv);
 
-            // _1!(font)!_
-            text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<code>$1</code> ');
+    // Initialize square movement functionality
+    const square = squareDiv;
+    let x = 100, y = 100, velocityX = 0, velocityY = 0;
+    const gravity = 0.8;
+    const friction = 0.98;
+    const bounce = -0.7;
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    let isDragging = false;
+    let dragOffsetX = 0, dragOffsetY = 0;
+    let lastMouseX = 0, lastMouseY = 0;
+
+    // Dragging logic
+    square.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        dragOffsetX = e.clientX - x;
+        dragOffsetY = e.clientY - y;
+        square.style.cursor = 'grabbing';
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            x = e.clientX - dragOffsetX;
+            y = e.clientY - dragOffsetY;
+
+            // Calculate velocity based on drag movement
+            velocityX = e.clientX - lastMouseX;
+            velocityY = e.clientY - lastMouseY;
+
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        square.style.cursor = 'grab';
+    });
+
+    // Touch support
+    square.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        isDragging = true;
+        dragOffsetX = touch.clientX - x;
+        dragOffsetY = touch.clientY - y;
+        lastMouseX = touch.clientX;
+        lastMouseY = touch.clientY;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+            const touch = e.touches[0];
+            x = touch.clientX - dragOffsetX;
+            y = touch.clientY - dragOffsetY;
+
+            // Calculate velocity based on drag movement
+            velocityX = touch.clientX - lastMouseX;
+            velocityY = touch.clientY - lastMouseY;
+
+            lastMouseX = touch.clientX;
+            lastMouseY = touch.clientY;
+        }
+    });
+
+    document.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    // Gravity and collision logic
+    function update() {
+        if (!isDragging) {
+            // Apply gravity
+            velocityY += gravity;
+
+            // Update position with velocity
+            x += velocityX;
+            y += velocityY;
+
+            // Wall collisions
+            if (x < 0 || x + square.offsetWidth > screenWidth) {
+                velocityX *= bounce;
+                x = Math.max(0, Math.min(x, screenWidth - square.offsetWidth));
+            }
+
+            // Bottom collision
+            if (y + square.offsetHeight > screenHeight) {
+                velocityY *= bounce;
+                y = screenHeight - square.offsetHeight;
+            }
+
+            // Apply friction to simulate natural slowing down
+            velocityX *= friction;
+            velocityY *= friction;
+        }
+
+        // Update square position
+        square.style.left = `${x}px`;
+        square.style.top = `${y}px`;
+
+        requestAnimationFrame(update);
+    }
+
+    // Start the animation
+    update();
+    
+    return ''; // Return empty string for replacement
+});
 
             // spin
             text = text.replace(/_?_!spin:(.*?)_/g, '<span class="spin">$1</span> ');;
@@ -418,6 +678,9 @@ text = text.replace(/_fakeload_/g, '<span class="spin" class="fakeload">⟳</spa
 // hr and br things
 text = text.replace(/_hr_/g, '<br><hr><br> ');
 text = text.replace(/_br_/g, '<br> ');
+
+//   if your bored of my stupid effects,
+//            do it yourself
 
             return text;
         }
@@ -548,5 +811,192 @@ function replaceButtonWithImage(buttonElement, imageSrc) {
   parent.replaceChild(img, buttonElement);
 }
 
+const inputField = document.getElementById('inputField');
+const outputArea = document.getElementById('output');
+const runButton = document.getElementById('runButton');
+const closeButton = document.getElementById('closeButton');
+const openButton = document.getElementById('openButton');
+const importFileInput = document.getElementById('importFileInput');
+
+let storedValue = localStorage.getItem('storedValue') || null; // Load stored value from local storage
+let userInput = null;
+let scriptContent = '';
+let warnCount = 0;
+let errorCount = 0;
+
+// Initialize stored value display
+function initializeStoredValue() {
+  if (storedValue) {
+    appendToOutput(`↺ ${storedValue}`, 'store');
+  }
+}
+
+// Execute Command Function
+function executeCommand(command) {
+  const [cmd, ...args] = command.split(' ');
+  scriptContent += `${command}\n`; // Add command to the script content for export
+
+  let message = replacePlaceholders(args.join(' ')); // Replace placeholders
+  let messageClass = ''; // CSS class for styling
+
+  switch (cmd) {
+    case 'help':
+      messageClass = 'help';
+      message = `─═ commands ═─
+      𝙡𝙤𝙜 ┄ logs a message
+      log 𝘵𝘦𝘹𝘵
+      
+      𝙬𝙧𝙣 ┄ writes a warning message
+      wrn 𝘵𝘦𝘹𝘵
+      
+      𝙚𝙧𝙧 ┄ writes an error message
+      err 𝘵𝘦𝘹𝘵
+      
+      𝙙𝙗𝙜 ┄ writes an debug message
+      dbg 𝘵𝘦𝘹𝘵
+      
+      𝙘𝙡𝙧 ┄ clears the console
+      clr
+      
+      𝙨𝙩𝙤𝙧𝙚 ┄ stores a value locally
+      store 𝘵𝘦𝘹𝘵
+      \\stored\\ to write the stored value (any command)
+
+      𝙧𝙚𝙥𝙚𝙖𝙩 ┄ repeats a command
+      repeat 𝘯𝘶𝘮𝘣𝘦𝘳 𝙘𝙤𝙢𝙢𝙖𝙣𝙙
+           
+      𝙞𝙣𝙥𝙪𝙩 ┄ get input from the user in a popup (with optionally being able to write text in the popup)
+      input '𝘵𝘦𝘹𝘵'
+      \\input\\ to get the value the user inputted
+           
+      𝙘𝙝𝙤𝙞𝙘𝙚 ┄ get a yes/no input from the user (with optionally being able to write text in the popup)
+      choice '𝘵𝘦𝘹𝘵'
+      
+      𝙥𝙤𝙥𝙪𝙥 ┄ show a popup with text in it
+      popup '𝘵𝘦𝘹𝘵'
+      
+      𝙧𝙖𝙣𝙙𝙤𝙢 ┄ generates a random number from a range
+      random 𝘯𝘶𝘮𝘣𝘦𝘳 𝘯𝘶𝘮𝘣𝘦𝘳
+      
+      𝙧𝙚𝙨𝙚𝙩 ┄ resets either the stored value or the inputted value
+      reset [stored|input]
+      `;
+      warnCount++;
+      break;
+    case 'log':
+      messageClass = 'log';
+      break;
+    case 'wrn':
+      messageClass = 'wrn';
+      message = `⚠▶ ${message}`;
+      warnCount++;
+      break;
+    case 'err':
+      messageClass = 'err';
+      message = `✘▶ ${message}`;
+      errorCount++;
+      break;
+    case 'clr': 
+      outputArea.innerHTML = '';
+      errorCount = 0;
+      warnCount = 0;
+      updateCountDisplay();
+      return;
+    case 'store': 
+      storedValue = message; // Update the value
+      localStorage.setItem('storedValue', storedValue); // Save to local storage
+      messageClass = 'store';
+      message = `⌨︎︎: ${storedValue}`;
+      break;
+    case 'reset': // Reset stored or input
+      const resetTarget = args[0] || 'both';
+      if (resetTarget === 'stored' || resetTarget === 'both') {
+        storedValue = null;
+        localStorage.removeItem('storedValue'); // Remove from local storage
+        appendToOutput(`☒▶ deleted stored value`, 'reset');
+      }
+      if (resetTarget === 'input' || resetTarget === 'both') {
+        userInput = null;
+        appendToOutput(`☒▶ deleted user input`, 'reset');
+      }
+      return;
+    case 'repeat':
+      const repeatTimes = parseInt(args[0], 10);
+      const repeatCommand = args.slice(1).join(' ');
+      if (!isNaN(repeatTimes) && repeatCommand) {
+        for (let i = 0; i < repeatTimes; i++) {
+          executeCommand(repeatCommand);
+        }
+      } else {
+        messageClass = 'err';
+        message = `⚠︎ Invalid repeat (you have to provide a number)`;
+      }
+      return; 
+    case 'input':
+      const promptMessage = args.join(' ').replace(/['"]+/g, '');
+      userInput = prompt(promptMessage);
+      messageClass = 'input';
+      message = `${userInput} (⌨︎︎)`;
+      break;
+    // Other commands here...
+    default:
+      messageClass = 'unknown';
+      message = ` ⁉️▶ |${command}| `;
+  }
+
+  function updateCountDisplay() {
+    const countDisplay = document.getElementById('countDisplay');
+    countDisplay.textContent = `[⚠︎: ${warnCount}, ✘: ${errorCount}]`;
+  }
+
+  appendToOutput(message, messageClass);
+  updateCountDisplay();
+  inputField.value = '';  
+}
+
+function appendToOutput(message, messageClass) {
+  const messageElement = document.createElement('div');
+  messageElement.className = messageClass;
+  messageElement.innerHTML = message;
+  outputArea.appendChild(messageElement);
+  outputArea.scrollTop = outputArea.scrollHeight;
+}
+
+function replacePlaceholders(command) {
+  return command
+    .replace(/\\stored\\/g, storedValue || '(nothing stored)')
+    .replace(/\\input\\/g, userInput || '(nothing inputted)');
+}
+
+function exportScript() {
+  const blob = new Blob([scriptContent], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'console_script.txt';
+  link.click();
+}
+
+// Event Listeners
+runButton.addEventListener('click', function () {
+  const command = inputField.value.trim();
+  if (command) executeCommand(command);
+});
+
+// Close Console
+closeButton.addEventListener('click', function () {
+  document.getElementById('console').style.display = 'none';
+  openButton.style.display = 'block'; 
+});
+
+// Open Console
+openButton.addEventListener('click', function () {
+  document.getElementById('console').style.display = 'block';
+  openButton.style.display = 'none'; 
+});
+
+// Initialize stored value on page load
+initializeStoredValue();
+
 </script>
-</script>
+</head>
+</html>
