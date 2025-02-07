@@ -313,7 +313,213 @@
   25% { top: 0px; }
   50% { top: 3px; }
   75% { top: 0px; }
-}  
+}     
+
+#level-maker-container {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #181818;
+    border: 2px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+#toolbar {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+#toolbar button {
+    background: #333;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: monospace;
+    transition: background 0.3s ease;
+}
+
+#toolbar button.active {
+    background: #666;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 3px;
+    width: 100%;
+    height: 250px;
+    margin-bottom: 10px;
+}
+
+#grid div {
+    background: #444;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#grid div:hover {
+    background: #555;
+    transform: scale(1.05);
+}
+
+#mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+#mobile-controls button {
+    background: #333;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: monospace;
+    transition: background 0.3s ease;
+}
+
+#map-data {
+    margin-top: 10px;
+    background: #222;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break;
+    }
+    
+    .drop-text {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px;
+    border: 2px solid #ccc;
+    background: #eee;
+    cursor: grab;
+    position: absolute;
+    transition: transform 0.3s ease-in-out;
+}
+
+.drop-place {
+    display: inline-block;
+    padding: 10px;
+    min-width: 100px;
+    min-height: 30px;
+    border: 2px dashed #aaa;
+    background: #f8f8f8;
+}
+
+
+.fake-ad {
+    display: inline-block;
+    position: relative;
+    padding: 6px 10px;
+    border: 2px solid red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    box-shadow: 2px 2px 0px black;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.ad-content {
+    position: relative;
+    z-index: 1;
+}
+
+.fake-ad::after {
+    content: "✖";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 14px;
+    height: 14px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 14px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 0px black;
+}
+
+.fake-ad-download {
+    display: inline-block;
+    position: relative;
+    padding: 10px 10px;
+    border: 4px dashed #FDFCFF;
+    background: #1D1C22;
+    color: #FFF;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Comic Sans MS', sans-serif;
+    box-shadow: 5px 5px 10px #000;
+    animation: shake 1s infinite;
+    cursor: pointer;
+}
+
+.fake-ad-download .ad-content {
+    font-size: 10px;
+    color: #000;
+    font-weight: bold;
+}
+
+.fake-ad-btn-download {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #1D1C22;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid #FFFFFF;
+    text-decoration: none;
+    box-shadow: 2px 2px 8px #333;
+    transition: all 0.3s ease;
+}
+
+.fake-ad-btn-download:hover {
+    background-color: #388E3C;
+    transform: scale(1.1);
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    50% { transform: translateX(0); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
     </style>
 </head>
 <body style="background-color:#1D1C22;">
@@ -328,6 +534,8 @@
 ‘hehe funny code thingy’ - Wess64
     </div>
     <span><input type="text" class="console-input" id="inputField" placeholder="type here or something..."><span class="run-button" id="runButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">ʳᵘⁿ ⇗ <span id="countDisplay" class="countDisplay">[ ]</span></span></span>
+    
+    
   </div>
     <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
   <span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
@@ -519,6 +727,11 @@
             // _switch
             text = text.replace(/_switch_/g, '<input type="range" min="0" max="1" value="0" style="width:30px;"> ');
                         
+            // ((extremely)) real ads (WILL get you money *wink wink*)
+text = text.replace(/_!ad:(.*?)_/g, '<span class="fake-ad">$1</span>');
+
+text = text.replace(/_!download-ad:"(.*?)":"(.*?)"_/g, '<span class="fake-ad-download">$1<a class="fake-ad-btn-download" href="$2" contenteditable="false">Download Now</a></span>');
+                        
             // square
 text = text.replace(/_!!square_/g, () => {
     // Create the square div dynamically
@@ -649,8 +862,153 @@ text = text.replace(/_!!square_/g, () => {
     return ''; // Return empty string for replacement
 });
 
+text = text.replace(/_!!mysquare:\{\s*([\s\S]*?)\}_/g, (_, params) => {
+    const defaults = {
+        size: "40x40",
+        bgcolor: "red",
+        textcolor: "white",
+        content: "",
+        gravity: 0.8,
+        friction: 0.98,
+        bounce: -0.7,
+        horizontalSpeed: 0,
+        group: "default",
+    };
+
+    const options = { ...defaults };
+
+    // Parse command parameters
+    params.split(/\s*,\s*/).forEach(param => {
+        const [key, value] = param.split(/\s*:\s*/);
+        if (key === "size") {
+            const [width, height] = value.split(/\s*x\s*/).map(Number);
+            options.width = width || parseInt(defaults.size.split("x")[0]);
+            options.height = height || parseInt(defaults.size.split("x")[1]);
+        } else if (key === "content") {
+            options.content = value.trim().slice(1, -1); // Remove backticks
+        } else {
+            options[key] = value.trim();
+        }
+    });
+
+    const squareDiv = document.createElement("div");
+    squareDiv.style.position = "absolute";
+    squareDiv.style.rotation = "2px";
+    squareDiv.style.width = `${options.width}px`;
+    squareDiv.style.height = `${options.height}px`;
+    squareDiv.style.backgroundColor = options.bgcolor;
+    squareDiv.style.color = options.textcolor;
+    squareDiv.style.textAlign = "center";
+    squareDiv.style.lineHeight = `${options.height}px`;
+    squareDiv.style.cursor = "grab";
+    squareDiv.style.borderRadius = "5px";
+    squareDiv.style.zIndex = "10000";
+    squareDiv.textContent = options.content;
+
+    document.body.appendChild(squareDiv);
+
+    let x = 100,
+        y = 100,
+        velocityX = 0,
+        velocityY = 0;
+    const gravity = parseFloat(options.gravity);
+    const friction = parseFloat(options.friction);
+    const bounce = parseFloat(options.bounce);
+    const horizontalSpeed = parseFloat(options.horizontalSpeed);
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    let isDragging = false,
+        dragOffsetX = 0,
+        dragOffsetY = 0;
+    let lastMouseX = 0,
+        lastMouseY = 0;
+
+    // Fix: Improved Dragging Logic for both mouse and touch events
+    function startDragging(e) {
+        isDragging = true;
+        const clientX = e.clientX || e.touches[0].clientX;
+        const clientY = e.clientY || e.touches[0].clientY;
+        dragOffsetX = clientX - x;
+        dragOffsetY = clientY - y;
+        squareDiv.style.cursor = "grabbing";  // Change cursor while dragging
+
+        // Prevent default to stop text selection and other behaviors
+        e.preventDefault();
+    }
+
+    // Handle mouse/touch movements for dragging
+    function moveDragging(e) {
+        if (isDragging) {
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+            x = clientX - dragOffsetX;
+            y = clientY - dragOffsetY;
+
+            // Calculate velocity based on drag movement
+            velocityX = clientX - lastMouseX;
+            velocityY = clientY - lastMouseY;
+
+            lastMouseX = clientX;
+            lastMouseY = clientY;
+        }
+    }
+
+    function stopDragging() {
+        isDragging = false;
+        squareDiv.style.cursor = "grab";
+    }
+    
+    squareDiv.addEventListener("mousedown", startDragging);
+    squareDiv.addEventListener("touchstart", startDragging);
+
+    document.addEventListener("mousemove", moveDragging);
+    document.addEventListener("touchmove", moveDragging);
+
+    document.addEventListener("mouseup", stopDragging);
+    document.addEventListener("touchend", stopDragging);
+    document.addEventListener("touchcancel", stopDragging);
+
+    // Gravity and collision logic
+    function update() {
+        if (!isDragging) {
+            velocityY += gravity;
+            x += velocityX;
+            y += velocityY;
+            
+            if (horizontalSpeed !== 0) {
+                x += horizontalSpeed;  // Move horizontally by the specified speed
+            }
+
+            if (x < 0 || x + squareDiv.offsetWidth > screenWidth) {
+                velocityX *= bounce;
+                x = Math.max(0, Math.min(x, screenWidth - squareDiv.offsetWidth));
+            }
+            
+            if (y + squareDiv.offsetHeight > screenHeight) {
+                velocityY *= bounce;
+                y = screenHeight - squareDiv.offsetHeight;
+            }
+
+            velocityX *= friction;
+            velocityY *= friction;
+        }
+
+        squareDiv.style.left = `${x}px`;
+        squareDiv.style.top = `${y}px`;
+        
+        squareDiv.style.width = `${options.width}px`;
+        squareDiv.style.height = `${options.height}px`;
+
+        requestAnimationFrame(update);
+    }
+
+    update();
+
+    return "";
+});
+
             // spin
-            text = text.replace(/_?_!spin:(.*?)_/g, '<span class="spin">$1</span> ');;
+            text = text.replace(/_!spin:(.*?)_/g, '<span class="spin">$1</span> ');
 
             // list with funny numbers
 text = text.replace(/_ol:("(.*?)"(?::"(.*?)")*)_/g, function(_, list) {
@@ -680,7 +1038,7 @@ text = text.replace(/_hr_/g, '<br><hr><br> ');
 text = text.replace(/_br_/g, '<br> ');
 
 //   if your bored of my stupid effects,
-//            do it yourself
+//              do it yourself
 
             return text;
         }
@@ -698,32 +1056,32 @@ text = text.replace(/_br_/g, '<br> ');
         }
 
         function restoreSelection(containerEl, savedPosition) {
-            let nodeStack = [containerEl], charCount = 0, range = document.createRange(), foundStart = false;
-            range.setStart(containerEl, 0);
-            range.collapse(true);
+    let nodeStack = [containerEl], charCount = 0, range = document.createRange(), foundStart = false;
+    range.setStart(containerEl, 0);
+    range.collapse(true);
 
-            while (nodeStack.length > 0) {
-                let node = nodeStack.pop();
+    while (nodeStack.length > 0) {
+        let node = nodeStack.pop();
 
-                if (node.nodeType === 3) {  // Text node
-                    let nextCharCount = charCount + node.length;
-                    if (!foundStart && savedPosition >= charCount && savedPosition <= nextCharCount) {
-                        range.setStart(node, savedPosition - charCount);
-                        foundStart = true;
-                    }
-                    charCount = nextCharCount;
-                } else {
-                    let childNodes = node.childNodes;
-                    for (let i = childNodes.length - 1; i >= 0; i--) {
-                        nodeStack.push(childNodes[i]);
-                    }
-                }
+        if (node.nodeType === 3) {  // Text node
+            let nextCharCount = charCount + node.length;
+            if (!foundStart && savedPosition >= charCount && savedPosition <= nextCharCount) {
+                range.setStart(node, savedPosition - charCount);
+                foundStart = true;
             }
-
-            let sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
+            charCount = nextCharCount;
+        } else {
+            let childNodes = node.childNodes;
+            for (let i = childNodes.length - 1; i >= 0; i--) {
+                nodeStack.push(childNodes[i]);
+            }
         }
+    }
+
+    let sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);  // Correctly add the range
+}
  document.getElementById('editor').addEventListener('input', function () {
             let editor = this;
             let content = editor.innerHTML;
@@ -1035,7 +1393,6 @@ openButton.addEventListener('click', function () {
 
 // Initialize stored value on page load
 initializeStoredValue();
-
 </script>
 </head>
 </html>
