@@ -591,6 +591,7 @@
     <label>selection [ bg: <input type="color" id="selectionBg" style="width:25px; background-color:#1D1C22; border: none;"></label> text: <input type="color" id="selectionText" style="width:25px; background-color:#1D1C22; border: none;"></label><br>]
     <br>
     <label>caret: <input type="color" id="caretColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <label>cursor: <input type="color" id="cursorColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
     <button id="resetCursorSettings" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ reset all</button>
     <hr>
     <h1>preview</h1><br>
@@ -605,6 +606,7 @@
     const settingsMenu = document.getElementById("cursorSettings");
 
     // Color pickers
+    const cursorColorInput = document.getElementById("cursorColor");
     const selectionBgInput = document.getElementById("selectionBg");
     const selectionTextInput = document.getElementById("selectionText");
     const caretColorInput = document.getElementById("caretColor");
@@ -612,10 +614,12 @@
 
     // Load saved settings
     function loadSettings() {
-     document.documentElement.style.setProperty("--selection-bg", localStorage.getItem("selectionBg") || "#555");
+        document.documentElement.style.setProperty("--cursor-color", localStorage.getItem("cursorColor") || "white");
+        document.documentElement.style.setProperty("--selection-bg", localStorage.getItem("selectionBg") || "#555");
         document.documentElement.style.setProperty("--selection-text", localStorage.getItem("selectionText") || "white");
         document.documentElement.style.setProperty("--caret-color", localStorage.getItem("caretColor") || "white");
 
+        cursorColorInput.value = localStorage.getItem("cursorColor") || "#ffffff";
         selectionBgInput.value = localStorage.getItem("selectionBg") || "#555555";
         selectionTextInput.value = localStorage.getItem("selectionText") || "#ffffff";
         caretColorInput.value = localStorage.getItem("caretColor") || "#ffffff";
@@ -623,23 +627,29 @@
 
     // Save and apply new settings
     function saveSettings() {
+        localStorage.setItem("cursorColor", cursorColorInput.value);
         localStorage.setItem("selectionBg", selectionBgInput.value);
         localStorage.setItem("selectionText", selectionTextInput.value);
         localStorage.setItem("caretColor", caretColorInput.value);
- document.documentElement.style.setProperty("--selection-bg", selectionBgInput.value);
+
+        document.documentElement.style.setProperty("--cursor-color", cursorColorInput.value);
+        document.documentElement.style.setProperty("--selection-bg", selectionBgInput.value);
         document.documentElement.style.setProperty("--selection-text", selectionTextInput.value);
         document.documentElement.style.setProperty("--caret-color", caretColorInput.value);
     }
 
     // Reset settings
     resetBtn.addEventListener("click", () => {
+        localStorage.removeItem("cursorColor");
         localStorage.removeItem("selectionBg");
         localStorage.removeItem("selectionText");
         localStorage.removeItem("caretColor");
         loadSettings();
     });
 
-    // Apply changes on input selectionBgInput.addEventListener("input", saveSettings);
+    // Apply changes on input
+    cursorColorInput.addEventListener("input", saveSettings);
+    selectionBgInput.addEventListener("input", saveSettings);
     selectionTextInput.addEventListener("input", saveSettings);
     caretColorInput.addEventListener("input", saveSettings);
 
