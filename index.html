@@ -520,6 +520,49 @@
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
 }
+
+#editor {
+    position: relative;
+    overflow: hidden;
+    resize: both;
+    height: 100px;
+    width: 80%;
+    border: 2px solid #000;
+    }
+    
+    #cursorSettings {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    background: #222;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#cursorSettings input {
+    width: 100%;
+    margin: 5px 0;
+}
+
+::selection {
+    background: var(--selection-bg, #555);
+    color: var(--selection-text, white);
+}
+
+.content-editable {
+    caret-color: var(--caret-color, white);
+}
+
+.caretcolor {
+    color: var(--caret-color, white);
+}
+
+.selectedtext {
+    background-color: var(--selection-bg, #555);
+    color: var(--selection-text, white);
+}
     </style>
 </head>
 <body style="background-color:#1D1C22;">
@@ -538,20 +581,96 @@
     
   </div>
     <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
+</div></p>
   <span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
     
     <hr style="border-color:#0D0C11; border-radius:5px;">
-    <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button> 
+    <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button>
+    <button id="cursorSettingsBtn" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;"> ⚙ </button>
+<div id="cursorSettings" style="display: none; position: absolute; background: #222; color: white; padding: 10px; border-radius: 5px;">
+    <label>selection [ bg: <input type="color" id="selectionBg" style="width:25px; background-color:#1D1C22; border: none;"></label> text: <input type="color" id="selectionText" style="width:25px; background-color:#1D1C22; border: none;"></label><br>]
+    <br>
+    <label>caret: <input type="color" id="caretColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <button id="resetCursorSettings" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ reset all</button>
+    <hr>
+    <h1>preview</h1><br>
+    <span class="selectedtext">selected</span><span class="caretcolor"> ︳</span>
+    <br>
+    or<br>
+    <p id="editor" class="content-editable" contenteditable="true" style="padding:5px; border-radius:5px; resize: none; width: 100% - 10px; height: 20px;">test here</p>
+    <hr>
+</div>
+<script> document.addEventListener("DOMContentLoaded", () => {
+    const settingsBtn = document.getElementById("cursorSettingsBtn");
+    const settingsMenu = document.getElementById("cursorSettings");
+
+    // Color pickers
+    const selectionBgInput = document.getElementById("selectionBg");
+    const selectionTextInput = document.getElementById("selectionText");
+    const caretColorInput = document.getElementById("caretColor");
+    const resetBtn = document.getElementById("resetCursorSettings");
+
+    // Load saved settings
+    function loadSettings() {
+     document.documentElement.style.setProperty("--selection-bg", localStorage.getItem("selectionBg") || "#555");
+        document.documentElement.style.setProperty("--selection-text", localStorage.getItem("selectionText") || "white");
+        document.documentElement.style.setProperty("--caret-color", localStorage.getItem("caretColor") || "white");
+
+        selectionBgInput.value = localStorage.getItem("selectionBg") || "#555555";
+        selectionTextInput.value = localStorage.getItem("selectionText") || "#ffffff";
+        caretColorInput.value = localStorage.getItem("caretColor") || "#ffffff";
+    }
+
+    // Save and apply new settings
+    function saveSettings() {
+        localStorage.setItem("selectionBg", selectionBgInput.value);
+        localStorage.setItem("selectionText", selectionTextInput.value);
+        localStorage.setItem("caretColor", caretColorInput.value);
+ document.documentElement.style.setProperty("--selection-bg", selectionBgInput.value);
+        document.documentElement.style.setProperty("--selection-text", selectionTextInput.value);
+        document.documentElement.style.setProperty("--caret-color", caretColorInput.value);
+    }
+
+    // Reset settings
+    resetBtn.addEventListener("click", () => {
+        localStorage.removeItem("selectionBg");
+        localStorage.removeItem("selectionText");
+        localStorage.removeItem("caretColor");
+        loadSettings();
+    });
+
+    // Apply changes on input selectionBgInput.addEventListener("input", saveSettings);
+    selectionTextInput.addEventListener("input", saveSettings);
+    caretColorInput.addEventListener("input", saveSettings);
+
+    // Show/hide settings menu
+    settingsBtn.addEventListener("click", () => {
+        settingsMenu.style.display = settingsMenu.style.display === "none" ? "block" : "none";
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!settingsMenu.contains(event.target) && event.target !== settingsBtn) {
+            settingsMenu.style.display = "none";
+        }
+    });
+
+    // Initialize settings
+    loadSettings();
+});
+</script>
     <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
     <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button><br><br>
     <button onclick="copyToClipboard()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᵉˣᵖᵒʳᵗ</button>
     <button onclick="showPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᶦᵐᵖᵒʳᵗ</button><br><br>
     <input type="file" id="file-input" onchange="importContent(event)" style="display:none;">
-    
     <div id="paste-area" style="display:none; margin-top:10px;">
+        <hr style="border-color:#0D0C11; border-radius:5px;">
         <textarea id="clipboard-text" style="width:100%; height:50px; border-radius:5px; background-color:#0D0C11; color:white; border:none; padding:5px;"></textarea>
         <button onclick="insertFromPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; margin-top:5px;">ₚₐₛₜₑ</button>
         <button onclick="hidePasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; margin-top:5px;">𝒸ₐₙ𝒸ₑₗ</button>
+        <hr style="border-color:#0D0C11; border-radius:5px;">
+        <br>
     </div>
     
     <textarea id="plain-text-box" style="display:none;"></textarea>
