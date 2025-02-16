@@ -4,6 +4,8 @@
 # 2 months of work
 #### (at the moment)
 this is the result of me spending a _little_ too much time from what is just a **project** of mine..
+> ![License](https://img.shields.io/badge/License-MIT-555?style=flat&color=1D1C22)
+> ![Version](https://img.shields.io/badge/Version-1.0.0-555?style=flat&color=1D1C22)
 
 ## Things included
 - **[easy to use]**: create text effects with just HTML and CSS
