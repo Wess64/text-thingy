@@ -1,32 +1,14 @@
-# Text Engine i made in one single file!! woohoo!!
+# Text Engine i made in one single file!!
 
-This is just a random thing i made in like **8 hours**, and its just a text effect engine  
+(as of speaking, we have over 30+ text effects!!)
 
-oh and also i made like 20 presets-
+## ☰ features
+- **Easy way** to make text effects (you just need to know html and css)
+- Wide selection of **presets** (even special ones)
+- **File exporting and importing**
+- **Customizable** __(sort of)__
 
-#### Okay, cool, but how to i make my own things? 
-First, make a css style 
+## ☰ 2 months of work
 
- .thing {  
-
-   background-color: red;  
-
- }  
-
-(you can use this if you dont know css well)
-
-With the css done, find the part wheres theres a bunch of stuff like this:
-
-> // text
-> 
-> text = text.replace(/##(.\*?)##/g,
-'*<thing*="something">$1</thing>');
-
-Copypaste that ⤴ under the last one (of the example i showed) and change:  
->> 1. things on the **(/##(.*?)##** section _(in this case, the **#'s**)_
->> to make the effect trigger itself (example: _**$**_ text _**$**_)
-
->> 2. **class=""** name on the ***<thing* class="something">** section to
->> the css class you made (in this example, **test**)
-
-  now test your thing and it should work :)
+## ☰ Tutorial on how to make text effects?
+Coming soon :)
