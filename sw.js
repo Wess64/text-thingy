@@ -3,7 +3,6 @@ const CACHE_NAME = 'text-thingy-v1';
        '/text-thingy/',
        '/text-thingy/index.html',
        '/text-thingy/script.js',
-       '/text-thingy/styles.css',
        '/text-thingy/icon-192x192.png',
        '/text-thingy/icon-512x512.png'
      ];
