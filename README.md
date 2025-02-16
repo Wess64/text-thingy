@@ -13,7 +13,7 @@ this is the result of me spending a _little_ too much time from what is just a *
 #### You can change some stuff _(only a few of them)_
 
 # Contributing
-very much welcome! you can read [contributing](CONTRIBUTING) for info
+very much welcome! you can read [contributing](CONTRIBUTING.md) for info
 
 ## ☰ How to use this thing
  • clone this repository ⇩⇩
