@@ -1,6 +1,8 @@
 # Text Engine i made in one single file!!
 
+```
 (as of speaking, this has over 30+ text effects!!)
+```
 
 ## ☰ features
 - **Easy way** to make text effects (you just need to know html and css)
