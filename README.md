@@ -1,23 +1,29 @@
-# Text Engine i made in one single file!!
+# An engine with a **whole lotta text**
+### (in one file!)
 
-```
-(as of speaking, this has over 30+ text effects!!)
-```
+# 2 months of work
+#### (at the moment)
+this is the result of me spending a _little_ too much time from what is just a **project** of mine..
 
-## ☰ features
-- **Easy way** to make text effects (you just need to know html and css)
-- Wide selection of **presets** (even special ones)
-- **File exporting and importing**
-- **Customizable** __(sort of)__
+## Things included
+- **[easy to use]**: Create text effects with just HTML and CSS.
+- **a TON of premade stuff**: has **30+ built-in effects ᵃⁿᵈ ᶜᵒᵘⁿᵗᶦⁿᵍ**  and even some bonus ones!
+- **exporting & importing**: save and share your stuff to the world!
+- **customizable**
+#### You can change some stuff _(only a few of them)_
 
-## ☰ 2 months of work
-
-## ☰ How 2 Use
+# Conributing
+very much welcome! you can read [contributing](
+## ☰ How to use this thing
  • clone this repository ⇩⇩
    ```bash
    git clone https://github.com/Wess64/text-thingy.git
    ```
- • Open **_index.html_**
- • Enjoy :>
+ • open **_index.html_**
+ • enjoy :)
+> or
+open the [engine](https://wess64.github.io/text-thingy/) on your browser (yep, its a website)
 
- (or if you dont want to MAKE text effects, and just wanna play around with it, [i have a website](https://wess64.github.io/text-thingy/) for this)
+```
+made with love :)
+```
