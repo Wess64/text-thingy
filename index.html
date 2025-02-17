@@ -473,55 +473,6 @@
     box-shadow: 1px 1px 0px black;
 }
 
-.fake-ad-download {
-    display: inline-block;
-    position: relative;
-    padding: 10px 10px;
-    border: 4px dashed #FDFCFF;
-    background: #1D1C22;
-    color: #FFF;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    font-family: 'Comic Sans MS', sans-serif;
-    box-shadow: 5px 5px 10px #000;
-    animation: shake 1s infinite;
-    cursor: pointer;
-}
-
-.fake-ad-download .ad-content {
-    font-size: 10px;
-    color: #000;
-    font-weight: bold;
-}
-
-.fake-ad-btn-download {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 6px 12px;
-    background-color: #1D1C22;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    border: 2px solid #FFFFFF;
-    text-decoration: none;
-    box-shadow: 2px 2px 8px #333;
-    transition: all 0.3s ease;
-}
-
-.fake-ad-btn-download:hover {
-    background-color: #388E3C;
-    transform: scale(1.1);
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(5px); }
-    50% { transform: translateX(0); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
 #editor {
     position: relative;
     overflow: hidden;
@@ -859,8 +810,6 @@
                         
             // ((extremely)) real ads (WILL get you money *wink wink*)
 text = text.replace(/_!ad:(.*?)_/g, '<span class="fake-ad">$1</span>');
-
-text = text.replace(/_!download-ad:"(.*?)":"(.*?)"_/g, '<span class="fake-ad-download">$1<a class="fake-ad-btn-download" href="$2" contenteditable="false">Download Now</a></span>');
                         
             // square
 text = text.replace(/_!!square_/g, () => {
