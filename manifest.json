@@ -2,7 +2,8 @@
   "name": "text thingy",
   "short_name": "textthingy",
   "description": "that engine with the effects lmao",
-  "start_url": "/text-thingy/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
@@ -17,11 +18,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "orientation": "any",
-  "lang": "en",
-  "dir": "auto",
-  "categories": [
-    "entertainment"
   ]
 }
