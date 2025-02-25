@@ -750,11 +750,11 @@
             // #button#
             text = text.replace(/#(.*?)#/g, '<button>$1</button> ');
 
-            // ®sub®
-            text = text.replace(/®(.*?)®/g, '<sub>$1</sub> ');
+            // _vvsubvv_
+            text = text.replace(/_vv(.*?)vv_/g, '<sub>$1</sub> ');
 
-            // ©sup©
-            text = text.replace(/©(.*?)©/g, '<sup>$1</sup> ');
+            // _^^sup^^_
+            text = text.replace(/_^^(.*?)^^_/g, '<sup>$1</sup> ');
 
             // @at@
             text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ');
