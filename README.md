@@ -11,8 +11,8 @@ this is the result of me spending a _little_ too much time from what is just a *
 - **[easy to use]**: create text effects with just HTML and CSS
 - **a TON of premade stuff**: has **30+ built-in effects ᵃⁿᵈ ᶜᵒᵘⁿᵗᶦⁿᵍ**  and even some bonus ones!
 - **exporting & importing**: save and share your stuff to the world!
-- **customizable**
-#### You can change some stuff _(only a few of them)_
+- **customizable**\*
+#### \*You can change some stuff _(only a few of them)_
 
 # Contributing
 very much welcome! you can read [contributing](CONTRIBUTING.md) for info
