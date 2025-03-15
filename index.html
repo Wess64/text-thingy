@@ -14,7 +14,7 @@
          background-color: #333;
          color: white;
         }
-        
+
         .bold {
             font-weight: bold;
         }
@@ -203,7 +203,7 @@
             0% {transform: rotate(0deg;)}
             100% {transform: rotate(360deg);}
         }
-        
+
         .console-window {
   display: none;
   width: 350px;
@@ -413,7 +413,7 @@
     word-wrap: break-word;
     overflow-wrap: break;
     }
-    
+
     .drop-text {
     display: inline-block;
     padding: 5px 10px;
@@ -481,7 +481,7 @@
     width: 80%;
     border: 2px solid #000;
     }
-    
+
     #cursorSettings {
     position: absolute;
     top: 40px;
@@ -515,6 +515,22 @@
     background-color: var(--selection-bg, #555);
     color: var(--selection-text, white);
 }
+
+.single-line-comment {
+  color: var(--single-line-comment-color, #888);
+}
+
+.multi-line-comment {
+  color: var(--multi-line-comment-color, #888);
+}
+
+.before-comment {
+  color: var(--before-comment-color, #888);
+}
+
+.block-comment {
+  color: var(--block-comment-color, #888);
+}
     </style>
 </head>
 <body style="background-color:#1D1C22;">
@@ -529,13 +545,13 @@
 ‘hehe funny code thingy’ - Wess64
     </div>
     <span><input type="text" class="console-input" id="inputField" placeholder="type here or something..."><span class="run-button" id="runButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">ʳᵘⁿ ⇗ <span id="countDisplay" class="countDisplay">[ ]</span></span></span>
-    
-    
+
+
   </div>
     <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
 </div></p>
   <span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
-    
+
     <hr style="border-color:#0D0C11; border-radius:5px;">
     <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button>
     <button id="cursorSettingsBtn" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;"> ⚙ </button>
@@ -544,18 +560,64 @@
     <br>
     <label>caret: <input type="color" id="caretColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
     <label>cursor: <input type="color" id="cursorColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <hr style="border-color:#0D0C11; border-radius:5px;">
+  <h2> // comments </h2>
+  <label>/! color: <input type="color" id="singleLineCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+  <label>/|! color: <input type="color" id="multiLineCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+  <label>!\ color: <input type="color" id="beforeCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+  <label>|X! color: <input type="color" id="blockCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+  <button onclick="resetCommentSettings()" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ Reset Comment Settings</button>
     <button id="resetCursorSettings" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ reset all</button>
-    <hr>
+    <hr style="border-color:#0D0C11; border-radius:5px;">
     <h1>preview</h1><br>
     <span class="selectedtext">selected</span><span class="caretcolor"> ︳</span>
     <br>
     or<br>
     <p id="editor" class="content-editable" contenteditable="true" style="padding:5px; border-radius:5px; resize: none; width: 100% - 10px; height: 20px;">test here</p>
-    <hr>
+    <hr style="border-color:#0D0C11; border-radius:5px;">
 </div>
 <script> document.addEventListener("DOMContentLoaded", () => {
     const settingsBtn = document.getElementById("cursorSettingsBtn");
     const settingsMenu = document.getElementById("cursorSettings");
+    
+function loadCommentSettings() {
+  document.documentElement.style.setProperty("--single-line-comment-color", localStorage.getItem("singleLineCommentColor") || "#888");
+  document.documentElement.style.setProperty("--multi-line-comment-color", localStorage.getItem("multiLineCommentColor") || "#888");
+  document.documentElement.style.setProperty("--before-comment-color", localStorage.getItem("beforeCommentColor") || "#888");
+  document.documentElement.style.setProperty("--block-comment-color", localStorage.getItem("blockCommentColor") || "#888");
+
+  document.getElementById('singleLineCommentColor').value = localStorage.getItem("singleLineCommentColor") || "#888888";
+  document.getElementById('multiLineCommentColor').value = localStorage.getItem("multiLineCommentColor") || "#888888";
+  document.getElementById('beforeCommentColor').value = localStorage.getItem("beforeCommentColor") || "#888888";
+  document.getElementById('blockCommentColor').value = localStorage.getItem("blockCommentColor") || "#888888";
+}
+
+function saveCommentSettings() {
+  localStorage.setItem("singleLineCommentColor", document.getElementById('singleLineCommentColor').value);
+  localStorage.setItem("multiLineCommentColor", document.getElementById('multiLineCommentColor').value);
+  localStorage.setItem("beforeCommentColor", document.getElementById('beforeCommentColor').value);
+  localStorage.setItem("blockCommentColor", document.getElementById('blockCommentColor').value);
+
+  document.documentElement.style.setProperty("--single-line-comment-color", document.getElementById('singleLineCommentColor').value);
+  document.documentElement.style.setProperty("--multi-line-comment-color", document.getElementById('multiLineCommentColor').value);
+  document.documentElement.style.setProperty("--before-comment-color", document.getElementById('beforeCommentColor').value);
+  document.documentElement.style.setProperty("--block-comment-color", document.getElementById('blockCommentColor').value);
+}
+
+function resetCommentSettings() {
+  localStorage.removeItem("singleLineCommentColor");
+  localStorage.removeItem("multiLineCommentColor");
+  localStorage.removeItem("beforeCommentColor");
+  localStorage.removeItem("blockCommentColor");
+  loadCommentSettings();
+}
+
+document.getElementById('singleLineCommentColor').addEventListener('input', saveCommentSettings);
+document.getElementById('multiLineCommentColor').addEventListener('input', saveCommentSettings);
+document.getElementById('beforeCommentColor').addEventListener('input', saveCommentSettings);
+document.getElementById('blockCommentColor').addEventListener('input', saveCommentSettings);
+
+loadCommentSettings();
 
     // Color pickers
     const cursorColorInput = document.getElementById("cursorColor");
@@ -634,13 +696,13 @@
         <hr style="border-color:#0D0C11; border-radius:5px;">
         <br>
     </div>
-    
+
     <textarea id="plain-text-box" style="display:none;"></textarea>
     <script>
       window.onload = function() {
         const savedText = localStorage.getItem('effectsText');
         const effectBox = document.getElementById('editor');
-        
+
         if (savedText) {
           effectBox.innerHTML = savedText;
           updatePlainText();
@@ -686,14 +748,14 @@
 
         if (file) {
           const reader = new FileReader();
-          
+
           reader.onload = function(e) {
             const content = e.target.result;
             const effectBox = document.getElementById('editor');
             effectBox.innerHTML = content;  // Insert the content into the editor
             updatePlainText();
           };
-          
+
           reader.readAsText(file);
         }
       }
@@ -736,81 +798,214 @@
     <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
 
     <script>
-        // Function to parse and apply formatting
-        function parseContent(text) {
-            // **bold**
-            text = text.replace(/\*\*(.*?)\*\*/g, '<span class="bold">$1</span> ');
+const loadedEffects = []; // Stores all loaded effects
 
-            // ~~highlight~~
-            text = text.replace(/~~(.*?)~~/g, '<span class="highlight">$1</span> ');
+// Parse a .tgy file
+function parseTGYFile(content) {
+  const effect = { enabled: true }; // Effects are enabled by default
 
-            // ``next``
-            text = text.replace(/``(.*?)``/g, '<br>$1 ');
+  // Extract fields using regex
+  const effectNameMatch = content.match(/effectname: `\/`([\s\S]*?)`\\`/);
+  const explanationMatch = content.match(/explanation: `\/`([\s\S]*?)`\\`/);
+  const htmlMatch = content.match(/html \{\{([\s\S]*?)\}\}/);
+  const parseMatch = content.match(/parse: `\/`([\s\S]*?)`\\`/);
+  const dateMatch = content.match(/date: (.*?)\n/);
+  const authorMatch = content.match(/author: (.*?)\n/);
+  const imageMatch = content.match(/image \{\{([\s\S]*?)\}\}/);
 
-            // #button#
-            text = text.replace(/#(.*?)#/g, '<button>$1</button> ');
+  if (!effectNameMatch || !htmlMatch || !parseMatch) {
+    throw new Error('Invalid .tgy file format');
+  }
 
-            // _sub:_
-            text = text.replace(/_sub:(.*?)_/g, '<sub>$1</sub> ');
+  effect.effectName = effectNameMatch[1].trim();
+  effect.explanation = explanationMatch ? explanationMatch[1].trim() : '';
+  effect.html = htmlMatch[1].trim();
+  effect.parse = parseMatch[1].trim();
+  effect.date = dateMatch ? dateMatch[1].trim() : '';
+  effect.author = authorMatch ? authorMatch[1].trim() : '';
+  effect.image = imageMatch ? imageMatch[1].trim() : '';
 
-            // _sup:_
-            text = text.replace(/_sup:(.*?)_/g, '<sup>$1</sup> ');
+  return effect;
+}
 
-            // @at@
-            text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ');
+// Load a .tgy file
+function loadEffect(tgyContent) {
+  try {
+    const effect = parseTGYFile(tgyContent);
+    loadedEffects.push(effect);
+    console.log(`Loaded effect: ${effect.effectName}`);
+    renderEffectList(); // Update the UI
+  } catch (error) {
+    console.error('Error loading effect:', error);
+    alert('Failed to load effect. Check the console for details.');
+  }
+}
 
-            // spoiler
-            text = text.replace(/°°(.*?)°°/g, '<span class="spoiler">$1</span> ');
-            text = text.replace(/_°(.*?)_/g, '<span class="extraSpoiler">$1</span> ');
+// Apply all enabled effects to the text
+function applyEffects(text) {
+  let result = text;
+  loadedEffects.forEach(effect => {
+    if (effect.enabled) {
+      try {
+        const regex = new RegExp(effect.parse, 'g');
+        result = result.replace(regex, effect.html);
+      } catch (error) {
+        console.error(`Error applying effect "${effect.effectName}":`, error);
+      }
+    }
+  });
+  return result;
+}
 
-            // _1!(font)!_
-            text = text.replace(/_1!(.*?)!_/g, '<code>$1</code> ');
+// Render the effect list UI
+function renderEffectList() {
+  const effectList = document.getElementById('effect-list');
+  if (!effectList) return; // Skip if the UI doesn't exist
 
-            // _2!(strikethrough)!_
-            text = text.replace(/_2!(.*?)!_/g, '<s>$1</s> ');
+  effectList.innerHTML = '';
 
-            // _3!(underline)!_
-            text = text.replace(/_3!(.*?)!_/g, '<u>$1</u> ');
+  loadedEffects.forEach((effect, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <div class="effect-preview">
+        ${effect.image ? `<img src="${effect.image}" alt="Effect Image" style="border-style: dashed none dashed none; border-width: 5px; border-radius: 5px;  padding: none; transform: scale(0.5); right: 0%;">` : '≫'}
+        <div>
+          <div class="effect-name">${effect.effectName}</div>
+          <div class="meta"><sup style="color: gray;">${effect.date} ${effect.author}</sup></div>
+          <div class="explanation" style="color: blue; text-decoration: underline; text-decoration-color: #0D0C11;" onclick="alert('${effect.explanation.replace(/'/g, "\\'")}')">' ᵉˣᵖˡᵃⁿᵃᵗᶦᵒⁿ ᵛ '</div>
+        </div>
+        <label>
+          <input type="checkbox" ${effect.enabled ? 'checked' : ''} onchange="toggleEffect(${index})">
+          Enable
+        </label>
+        <button onclick="removeEffect(${index})" style="border:none; background-color:#ff5555; border-radius:5px; padding:2px 5px; color:white; margin-left:10px;">✘</button>
+      </div>
+    `;
+    effectList.appendChild(li);
+  });
+}
 
-            // _4!(italic)!_
-            text = text.replace(/_4!(.*?)!_/g, '<dfn>$1</dfn> ');
+// Toggle an effect's enabled state
+function toggleEffect(index) {
+  loadedEffects[index].enabled = !loadedEffects[index].enabled;
+  renderEffectList();
+}
 
-            // _scale:x?
-            text = text.replace(/_scale:(\d+)?(.*?)_/g, '<span style="transform:scale($1);">$2</span> ');
+// Remove an effect
+function removeEffect(index) {
+  loadedEffects.splice(index, 1);
+  renderEffectList();
+}
 
-            // funny arrow
-            text = text.replace(/tarrow:"(.*?)"/g, '<span style="transform:rotate($1deg);" class="doesThings" contenteditable="false">➡︎</span> ');
+// Handle file input for loading .tgy files
+function handleFileLoad(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const tgyContent = e.target.result;
+      loadEffect(tgyContent);
+    };
+    reader.readAsText(file);
+  }
+}
 
-            /* _?dropdown: */
-            text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select> ');
+// Add the plugin system UI to the page
+function addPluginUI() {
+  const pluginUI = `
+    <div id="plugin-manager">
+      <hr style="border-color:#0D0C11; border-radius:5px;"><br>
+      <span style="position:relative; right: -10px; border-style: double none double none; border-width: 10px; border-color: #1D1C22; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">manage 𝕖𝚏𝐟ᴇ𝘤𝒕𝗌</span>
+      <ul id="effect-list"></ul>
+      <input type="file" id="load-effect" accept=".tgy" onchange="handleFileLoad(event)" style="display:none;">
+      <button onclick="document.getElementById('load-effect').click()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⸕ Load Effect</button>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', pluginUI);
+}
 
-            // _?summary:
-            text = text.replace(/_?_?summary:"(.*?)":"(.*?)"/g, '<details><summary>$1</summary>$2</details> ');
+// Initialize the plugin system
+addPluginUI();
+renderEffectList();
 
-            // _?reaction
-            text = text.replace(/_?reaction:"(.*?)"/g, '<div class="reaction" data-count="0" onclick="toggleCounter(this)"><span class="label">$1</span><span class="counter">0</span></div> ');
+// Function to parse content and apply effects
+function parseContent(text) {
+  // Apply loaded effects
+  text = applyEffects(text);
 
-            // _!emoji
-            text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div> ');
+  // **bold**
+  text = text.replace(/\*\*(.*?)\*\*/g, '<span class="bold">$1</span> ');
 
-            // minigame
-            text = text.replace(/_!!minigame1_/g, '<iframe src="checkboxbox.html" style="width:200px; height:200px; border:none; border-radius: 5px;" allowfullscreen="true"></iframe>');
-            
-            // _!marquee
-            text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<sup contenteditable="false">╎</sup><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><sup contenteditable="false">╎</sup> ');
+  // ~~highlight~~
+  text = text.replace(/~~(.*?)~~/g, '<span class="highlight">$1</span> ');
 
-            // _checkbox_
-            text = text.replace(/_!checkbox_/g, '<input type="checkbox"> ');
+  // ``next``
+  text = text.replace(/``(.*?)``/g, '<br>$1 ');
+
+  // #button#
+  text = text.replace(/#(.*?)#/g, '<button>$1</button> ');
+
+  // _sub:_
+  text = text.replace(/_sub:(.*?)_/g, '<sub>$1</sub> ');
+
+  // _sup:_
+  text = text.replace(/_sup:(.*?)_/g, '<sup>$1</sup> ');
+
+  // @at@
+  text = text.replace(/@(.*?)@/g, '<mark style="background-color:blue; color:white; border-radius:5px; padding:5px;">@$1</mark> ');
+
+  // spoiler
+  text = text.replace(/°°(.*?)°°/g, '<span class="spoiler">$1</span> ');
+  text = text.replace(/_°(.*?)_/g, '<span class="extraSpoiler">$1</span> ');
+
+  // _1!(font)!_
+  text = text.replace(/_1!(.*?)!_/g, '<code>$1</code> ');
+
+  // _2!(strikethrough)!_
+  text = text.replace(/_2!(.*?)!_/g, '<s>$1</s> ');
+
+  // _3!(underline)!_
+  text = text.replace(/_3!(.*?)!_/g, '<u>$1</u> ');
+
+  // _4!(italic)!_
+  text = text.replace(/_4!(.*?)!_/g, '<dfn>$1</dfn> ');
+
+  // _scale:x?
+  text = text.replace(/_scale:(\d+)?(.*?)_/g, '<span style="transform:scale($1);">$2</span> ');
+
+  // funny arrow
+  text = text.replace(/tarrow:"(.*?)"/g, '<span style="transform:rotate($1deg);" class="doesThings" contenteditable="false">➡︎</span> ');
+
+  /* _?dropdown: */
+  text = text.replace(/_?_dropdown:"(.*?)":"(.*?)":"(.*?)"/g, '<select id="$1"><option value="$1">$1</option><option value="$2">$2</option><option value="$3">$3</option></select> ');
+
+  // _?summary:
+  text = text.replace(/_?_?summary:"(.*?)":"(.*?)"/g, '<details><summary>$1</summary>$2</details> ');
+
+  // _?reaction
+  text = text.replace(/_?reaction:"(.*?)"/g, '<div class="reaction" data-count="0" onclick="toggleCounter(this)"><span class="label">$1</span><span class="counter">0</span></div> ');
+
+  // _!emoji
+  text = text.replace(/_?_!emoji/g, '<div class="reaction-system"><label class="upload-button"><abbr>⥣</abbr><input type="file" accept="image/*" onchange="handleImageUpload(event)" hidden></label><div id="reaction-container"></div></div> ');
+
+  // minigame
+  text = text.replace(/_!!minigame1_/g, '<iframe src="checkboxbox.html" style="width:200px; height:200px; border:none; border-radius: 5px;" allowfullscreen="true"></iframe>');
+
+  // _!marquee
+  text = text.replace(/_?marquee:"(.*?)":(.*?)_/g, '<sup contenteditable="false">╎</sup><marquee behavior="scroll" direction="$1" style="width:100px; height:20px; border:none; background-color:#0D0C11;">$2</marquee><sup contenteditable="false">╎</sup> ');
+
+  // _checkbox_
+  text = text.replace(/_!checkbox_/g, '<input type="checkbox"> ');
 
             // _slider
             text = text.replace(/_?_?slider:"(.*?)":"(.*?)":"(.*?)"_/g, '<input type="range" min="$1" max="$2" value="$3"> ');
 
             // _switch
             text = text.replace(/_switch_/g, '<input type="range" min="0" max="1" value="0" style="width:30px;"> ');
-                        
+
             // ((extremely)) real ads (WILL get you money *wink wink*)
 text = text.replace(/_!ad:(.*?)_/g, '<span class="fake-ad">$1</span>');
-                        
+
             // square
 text = text.replace(/_!!square_/g, () => {
     // Create the square div dynamically
@@ -827,7 +1022,7 @@ text = text.replace(/_!!square_/g, () => {
     squareDiv.style.cursor = 'grab';
     squareDiv.style.borderRadius = '5px';
     squareDiv.style.zIndex = '10000'; // Ensure it's on top of other elements
-    
+
     // Append square to the body (not to the text container)
     document.body.appendChild(squareDiv);
 
@@ -937,7 +1132,7 @@ text = text.replace(/_!!square_/g, () => {
 
     // Start the animation
     update();
-    
+
     return ''; // Return empty string for replacement
 });
 
@@ -1036,7 +1231,7 @@ text = text.replace(/_!!mysquare:\{\s*([\s\S]*?)\}_/g, (_, params) => {
         isDragging = false;
         squareDiv.style.cursor = "grab";
     }
-    
+
     squareDiv.addEventListener("mousedown", startDragging);
     squareDiv.addEventListener("touchstart", startDragging);
 
@@ -1053,7 +1248,7 @@ text = text.replace(/_!!mysquare:\{\s*([\s\S]*?)\}_/g, (_, params) => {
             velocityY += gravity;
             x += velocityX;
             y += velocityY;
-            
+
             if (horizontalSpeed !== 0) {
                 x += horizontalSpeed;  // Move horizontally by the specified speed
             }
@@ -1062,7 +1257,7 @@ text = text.replace(/_!!mysquare:\{\s*([\s\S]*?)\}_/g, (_, params) => {
                 velocityX *= bounce;
                 x = Math.max(0, Math.min(x, screenWidth - squareDiv.offsetWidth));
             }
-            
+
             if (y + squareDiv.offsetHeight > screenHeight) {
                 velocityY *= bounce;
                 y = screenHeight - squareDiv.offsetHeight;
@@ -1074,7 +1269,7 @@ text = text.replace(/_!!mysquare:\{\s*([\s\S]*?)\}_/g, (_, params) => {
 
         squareDiv.style.left = `${x}px`;
         squareDiv.style.top = `${y}px`;
-        
+
         squareDiv.style.width = `${options.width}px`;
         squareDiv.style.height = `${options.height}px`;
 
@@ -1113,8 +1308,20 @@ text = text.replace(/_voice:"(.*?)"_/g, function(_, title) {
 text = text.replace(/_fakeload_/g, '<span class="spin" class="fakeload">⟳</span> ');
 
 // hr and br things
-text = text.replace(/_hr_/g, '<br><hr><br> ');
+text = text.replace(/_hr_/g, '<br><hr style="border-color:#0D0C11; border-radius:5px;"><br> ');
 text = text.replace(/_br_/g, '<br> ');
+
+text = text.replace(/!\/.*$/gm, ''); 
+text = text.replace(/\?\/.*$/gm, ''); 
+
+text = text.replace(/\/\|![\s\S]*?!\|\\/g, ''); 
+text = text.replace(/\/\|\?[\s\S]*?\?\|\\/g, ''); 
+
+text = text.replace(/^[\s\S]*?\\!\s*/gm, ''); 
+text = text.replace(/^[\s\S]*?\\?\s*/gm, ''); 
+
+text = text.replace(/!\/ \|X![\s\S]*/g, ''); 
+text = text.replace(/\?\/ \|X\?[\s\S]*/g, '');
 
 //   if your bored of my stupid effects,
 //              do it yourself
