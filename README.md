@@ -13,6 +13,7 @@ this is the result of me spending a _little_ too much time from what is just a *
 - **exporting & importing**: save and share your stuff to the world!
 - **customizable**\*
 #### \*You can change some stuff _(only a few of them)_
+- **A GOD DAMN EFFECT EDITOR**: THATS RIGHT! we now have custom effect support, able to be done by the all new `.tgy` format, and [heres the editor](tgyediting.html)
 
 # Contributing
 very much welcome! you can read [contributing](CONTRIBUTING.md) for info
