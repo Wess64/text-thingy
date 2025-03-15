@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.tgy Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1D1C22;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .editor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        textarea, input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #0D0C11;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 5px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        button {
+            background-color: #0D0C11;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #333;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .effect-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .effect-preview img {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        .effect-preview .effect-name {
+            font-weight: bold;
+        }
+        .effect-preview .meta {
+            font-size: 0.9em;
+            color: #8F9095;
+        }
+        .effect-preview .explanation {
+            cursor: pointer;
+            color: #7289DA;
+        }
+        .html-render {
+            position: relative;
+            top: 10px;
+            padding: 10px;
+            background-color: white;
+            border-color: #1D1C22;
+            border-width: 10px;
+            border-radius: none;
+            border-style: none none none double;
+            resize: both;
+            color: black;
+            width: 50%;
+        }
+        hr {
+            animation: borders 10s infinite;
+        }
+        @keyframes borders {
+            0% {border-style: solid;}
+            15% {border-style: dashed;}
+            30% {border-style: double;}
+            45% {border-style: dotted;}
+            60% {border-style: inset;}
+            75% {border-style: outset;}
+        }
+    </style>
+</head>
+<body>
+    <form id="tgyForm">
+        <div class="editor-grid">        
+            <div>
+                <label for="effectName"><sup style="text-decoration: underline; text-decoration-color: gray;">*</sup> name:</label>
+                <input type="text" id="effectName" required>
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <label for="htmlTemplate"><sup style="text-decoration: underline; text-decoration-color: gray;">*</sup> HTML</label>
+                <textarea id="htmlTemplate" placeholder="html of the effect" required></textarea>
+                <div id="htmlRender" class="html-render"></div>
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <label for="explanation">explanation:</label>
+                <textarea id="explanation" placeholder="e.g., Creates a [ p ] element"></textarea>
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <label for="parsePattern"><sup style="text-decoration: underline; text-decoration-color: gray;">*</sup> parsing thing:</label>
+                <input type="text" id="parsePattern"  required>
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <label for="author"><sup style="text-decoration: underline; text-decoration-color: gray;">*</sup> author <sup style="color: #1d1c22; background-color: #0d0c11; padding: 2px; border-radius: 7px;">metadata</sup></label>
+                <input type="text" id="author" placeholder="(can be other things)" required>
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <label for="date"><sup style="text-decoration: underline; text-decoration-color: gray;">*</sup> date <sup style="color: #1d1c22; background-color: #0d0c11; padding: 2px; border-radius: 7px;">metadata</sup></label>
+                <input type="text" id="date" placeholder="(can be other things)" required>
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <label for="image">image</label>
+                <input type="text" id="image" placeholder="directory or image">
+                <br><hr style="border: 5px double #0d0c11;">
+            </div>
+            <div>
+                <button type="submit">Save .tgy File</button>
+                <button type="button" onclick="loadTGYFile()">Load .tgy File</button>
+            </div>
+        </div>
+        <div class="preview">
+            <div id="effectPreview"></div>
+        </div>
+    </form>
+
+    <script>
+        // Save .tgy file
+        function saveTGYFile() {
+  const effectName = document.getElementById('effectName').value;
+  const author = document.getElementById('author').value;
+  const date = document.getElementById('date').value;
+  const image = document.getElementById('image').value;
+  const parsePattern = document.getElementById('parsePattern').value;
+  const htmlTemplate = document.getElementById('htmlTemplate').value;
+  const explanation = document.getElementById('explanation').value;
+
+  // Create .tgy content
+  const tgyContent = `
+var[1]
+\`~\`
+effectname: \`/\`${effectName}\`\\\`
+explanation: \`/\`${explanation}\`\\\`
+html {{
+${htmlTemplate}
+}}
+\`~\`
+
+parse: \`/\`${parsePattern}\`\\\`
+date: ${date}
+author: ${author}
+image {{
+${image}
+}}
+  `;
+
+  // Create a Blob and download the file
+  const blob = new Blob([tgyContent], { type: 'application/octet-stream' }); // Use a generic MIME type
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${effectName}.tgy`; // Set the file name with .tgy extension
+  link.click();
+}
+
+        // Load .tgy file
+        function loadTGYFile() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.tgy';
+            fileInput.onchange = function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const content = e.target.result;
+                        parseTGYFile(content);
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            fileInput.click();
+        }
+
+        // Parse .tgy file and populate the form
+        function parseTGYFile(content) {
+            try {
+                const effectName = content.match(/effectname: `\/`([\s\S]*?)`\\`/)[1].trim();
+                const explanation = content.match(/explanation: `\/`([\s\S]*?)`\\`/)[1].trim();
+                const htmlTemplate = content.match(/html \{\{([\s\S]*?)\}\}/)[1].trim();
+                const parsePattern = content.match(/parse: `\/`([\s\S]*?)`\\`/)[1].trim();
+                const date = content.match(/date: (.*?)\n/)[1].trim();
+                const author = content.match(/author: (.*?)\n/)[1].trim();
+                const image = content.match(/image \{\{([\s\S]*?)\}\}/)[1].trim();
+
+                document.getElementById('effectName').value = effectName;
+                document.getElementById('author').value = author;
+                document.getElementById('date').value = date;
+                document.getElementById('image').value = image;
+                document.getElementById('parsePattern').value = parsePattern;
+                document.getElementById('htmlTemplate').value = htmlTemplate;
+                document.getElementById('explanation').value = explanation;
+
+                updatePreview(effectName, author, date, image, explanation);
+                updateHTMLRender(htmlTemplate);
+            } catch (error) {
+                console.error('Error parsing .tgy file:', error);
+                alert('Failed to parse .tgy file. Check the console for details.');
+            }
+        }
+
+        // Update preview
+        function updatePreview(effectName, author, date, image, explanation) {
+            const effectPreview = document.getElementById('effectPreview');
+            effectPreview.innerHTML = `
+                <div class="effect-preview">
+                    ${image ? `<img src="${image}" alt="Effect Image">` : '≫'}
+                    <div>
+                        <div class="effect-name">${effectName}</div>
+                        <div class="meta">${date} ${author}</div>
+                        <div class="explanation" onclick="alert('${explanation.replace(/'/g, "\\'")}')">' ᵉˣᵖˡᵃⁿᵃᵗᶦᵒⁿ ᵛ '</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update HTML render (rendered HTML)
+        function updateHTMLRender(htmlTemplate) {
+            const htmlRender = document.getElementById('htmlRender');
+            htmlRender.innerHTML = htmlTemplate; // Render the HTML
+        }
+
+        // Handle form submission
+        document.getElementById('tgyForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            saveTGYFile();
+        });
+
+        // Update preview and HTML viewer on input
+        document.getElementById('htmlTemplate').addEventListener('input', function () {
+            const htmlTemplate = this.value;
+            updateHTMLRender(htmlTemplate);
+        });
+
+        document.getElementById('tgyForm').addEventListener('input', function () {
+            const effectName = document.getElementById('effectName').value;
+            const author = document.getElementById('author').value;
+            const date = document.getElementById('date').value;
+            const image = document.getElementById('image').value;
+            const explanation = document.getElementById('explanation').value;
+
+            updatePreview(effectName, author, date, image, explanation);
+        });
+    </script>
+</body>
+</html>
