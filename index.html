@@ -531,42 +531,131 @@
 .block-comment {
   color: var(--block-comment-color, #888);
 }
+
+        .minimized-elements-container {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Adds spacing between minimized buttons */
+    z-index: 10000;
+}
+
+.minimized-button {
+    background: #0d0c11;
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+}
+
+        .draggable-element {
+            position: absolute;
+            border: 3px solid #ffffff;
+            padding: 5px;
+            width: 200px;
+            background: #0d0c11;
+            color: #ffffff;
+            cursor: grab;
+            z-index: 1000;
+        }
+
+        .window-handle {
+            cursor: move;
+        }
+
+        .drag-handle {
+            cursor: grab;
+        }
+
+        .minimize-handle {
+            cursor: pointer;
+        }
+
+        .element-content {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body style="background-color:#1D1C22;">
-    <div id="console" class="console-window"resizeable="true">
-    <span class="close-button" id="closeButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">✘</span>
-    <div class="console-header">ｃｏｎｓｏｌｅ</div>
-    <div class="console-output" id="output">
-▀█▀⠀█░█⠀█⠀█▄░█⠀█▀▀⠀█▄█
-░█░⠀█▀█⠀█⠀█░▀█⠀█▄█⠀░█░
-════⠀c⠀o⠀n⠀s⠀o⠀l⠀e⠀═════
+<!-- Minimized Elements Container -->
+<div id="minimized-elements" class="minimized-elements-container"></div>
+        <div id="console" class="console-window" resizeable="true">
+            <span class="close-button" id="closeButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">✘</span>
+            <div class="console-output" id="output">
+                ▀█▀⠀█░█⠀█⠀█▄░█⠀█▀▀⠀█▄█
+                ░█░⠀█▀█⠀█⠀█░▀█⠀█▄█⠀░█░
+                ════⠀c⠀o⠀n⠀s⠀o⠀l⠀e⠀═════
+                ‘hehe funny code thingy’ - Wess64
+            </div>
+            <span>
+                <input type="text" class="console-input" id="inputField" placeholder="type here or something...">
+                <span class="run-button" id="runButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">ʳᵘⁿ ⇗ <span id="countDisplay" class="countDisplay">[ ]</span></span>
+            </span>
+        </div>
 
-‘hehe funny code thingy’ - Wess64
+    <!-- Typing Area Window -->
+    <div class="draggable-element" style="top: 50px; left: 50px;">
+        <span class="element-name">typing area</span>
+        <span class="drag-handle">✥</span>
+        <span class="window-handle">❐</span>
+        <span class="minimize-handle">╺╸</span>
+        <hr style="border-style: solid; border-color: #ffffff; margin: 4px 0;">
+        <div class="element-content">
+            <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;" placeholder="type here..."></p>
+        </div>
     </div>
-    <span><input type="text" class="console-input" id="inputField" placeholder="type here or something..."><span class="run-button" id="runButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">ʳᵘⁿ ⇗ <span id="countDisplay" class="countDisplay">[ ]</span></span></span>
 
+    <!-- Main Buttons Window -->
+    <div class="draggable-element" style="top: 300px; left: 50px;">
+        <span class="element-name">management</span>
+        <span class="drag-handle">✥</span>
+        <span class="window-handle">❐</span>
+        <span class="minimize-handle">╺╸</span>
+        <hr style="border-style: solid; border-color: #ffffff; margin: 4px 0;">
+        <div class="element-content">
+            <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
+            <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button><br><br>
+            <button onclick="copyToClipboard()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᵉˣᵖᵒʳᵗ</button>
+            <button onclick="showPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᶦᵐᵖᵒʳᵗ</button><br><br>
+            <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button>
+            <button id="cursorSettingsBtn" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;"> ⚙ </button>
+        </div>
+    </div>
 
-  </div>
-    <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;"></p>
-</div></p>
-  <span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
+    <!-- Secondary Buttons Window -->
+    <div class="draggable-element" style="top: 550px; left: 50px;">
+        <span class="element-name">links</span>
+        <span class="drag-handle">✥</span>
+        <span class="window-handle">❐</span>
+        <span class="minimize-handle">╺╸</span>
+        <hr style="border-style: solid; border-color: #ffffff; margin: 4px 0;">
+        <div class="element-content">
+            <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
+            <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
+        </div>
+    </div>
 
-    <hr style="border-color:#0D0C11; border-radius:5px;">
-    <button onclick="clearStorage()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">🗑</button>
-    <button id="cursorSettingsBtn" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;"> ⚙ </button>
+<!-- Open Console Button -->
+<span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
+
+<!-- Settings Menu -->
 <div id="cursorSettings" style="display: none; position: absolute; background: #222; color: white; padding: 10px; border-radius: 5px;">
     <label>selection [ bg: <input type="color" id="selectionBg" style="width:25px; background-color:#1D1C22; border: none;"></label> text: <input type="color" id="selectionText" style="width:25px; background-color:#1D1C22; border: none;"></label><br>]
     <br>
     <label>caret: <input type="color" id="caretColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
     <label>cursor: <input type="color" id="cursorColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
     <hr style="border-color:#0D0C11; border-radius:5px;">
-  <h2> // comments </h2>
-  <label>/! color: <input type="color" id="singleLineCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
-  <label>/|! color: <input type="color" id="multiLineCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
-  <label>!\ color: <input type="color" id="beforeCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
-  <label>|X! color: <input type="color" id="blockCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
-  <button onclick="resetCommentSettings()" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ Reset Comment Settings</button>
+    <h2> // comments </h2>
+    <label>/! color: <input type="color" id="singleLineCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <label>/|! color: <input type="color" id="multiLineCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <label>!\ color: <input type="color" id="beforeCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <label>|X! color: <input type="color" id="blockCommentColor" style="width:25px; background-color:#1D1C22; border: none;"></label><br>
+    <button onclick="resetCommentSettings()" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ Reset Comment Settings</button>
     <button id="resetCursorSettings" style="margin-top: 5px; border: none; background-color: red; border-radius: 5px; padding: 5px; color: white;">↺ reset all</button>
     <hr style="border-color:#0D0C11; border-radius:5px;">
     <h1>preview</h1><br>
@@ -682,22 +771,7 @@ loadCommentSettings();
     // Initialize settings
     loadSettings();
 });
-</script>
-    <button onclick="exportContent()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᵉˣᵖᵒʳᵗ</button>
-    <button onclick="triggerFileInput()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶦᵐᵖᵒʳᵗ</button><br><br>
-    <button onclick="copyToClipboard()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇲ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᵉˣᵖᵒʳᵗ</button>
-    <button onclick="showPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">⇱ ᶜˡᶦᵖᵇᵒᵃʳᵈ ᶦᵐᵖᵒʳᵗ</button><br><br>
-    <input type="file" id="file-input" onchange="importContent(event)" style="display:none;">
-    <div id="paste-area" style="display:none; margin-top:10px;">
-        <hr style="border-color:#0D0C11; border-radius:5px;">
-        <textarea id="clipboard-text" style="width:100%; height:50px; border-radius:5px; background-color:#0D0C11; color:white; border:none; padding:5px;"></textarea>
-        <button onclick="insertFromPasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; margin-top:5px;">ₚₐₛₜₑ</button>
-        <button onclick="hidePasteArea()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; margin-top:5px;">𝒸ₐₙ𝒸ₑₗ</button>
-        <hr style="border-color:#0D0C11; border-radius:5px;">
-        <br>
-    </div>
-
-    <textarea id="plain-text-box" style="display:none;"></textarea>
+</script><textarea id="plain-text-box" style="display:none;"></textarea>
     <script>
       window.onload = function() {
         const savedText = localStorage.getItem('effectsText');
@@ -794,10 +868,6 @@ loadCommentSettings();
       }
     </script>
 </body>
-    <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
-    <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
-    <a href="https://wess64.github.io/tgy-editin/" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">.tgy</a>
-
     <script>
 const loadedEffects = []; // Stores all loaded effects
 
@@ -1680,6 +1750,132 @@ openButton.addEventListener('click', function () {
 
 // Initialize stored value on page load
 initializeStoredValue();
+
+// Window Management System
+const fonts = ['Arial', 'Courier New', 'Georgia', 'Verdana', 'Comic Sans MS'];
+let draggedElement = null;
+let offsetX = 0, offsetY = 0;
+
+function getRandomFont() {
+    return fonts[Math.floor(Math.random() * fonts.length)];
+}
+
+// Minimize Functionality
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('minimize-handle')) {
+        const element = e.target.closest('.draggable-element');
+        minimizeElement(element);
+    }
+});
+
+function minimizeElement(element) {
+    const minimizedButton = document.createElement('div');
+    minimizedButton.className = 'minimized-button';
+    minimizedButton.textContent = element.querySelector('.element-name').textContent;
+
+    // Apply random font only for the "custom effects" window
+    if (element.querySelector('.element-name').textContent === 'custom effects') {
+        minimizedButton.style.fontFamily = getRandomFont();
+    }
+
+    minimizedButton.addEventListener('click', () => {
+        element.style.display = 'block';
+        minimizedButton.remove();
+        if (element.querySelector('#editor')) {
+            element.querySelector('#editor').setAttribute('contenteditable', 'true');
+        }
+    });
+
+    // Add the minimized button to the container
+    const minimizedContainer = document.getElementById('minimized-elements');
+    minimizedContainer.appendChild(minimizedButton);
+    element.style.display = 'none';
+
+    // Disable text area for the typing area window
+    if (element.querySelector('#editor')) {
+        element.querySelector('#editor').setAttribute('contenteditable', 'false');
+    }
+}
+
+// Drag and Drop Functionality
+function startDragging(e) {
+    const handle = e.target;
+    if (handle.classList.contains('drag-handle') || handle.classList.contains('window-handle')) {
+        draggedElement = handle.closest('.draggable-element');
+        const rect = draggedElement.getBoundingClientRect();
+
+        // Calculate offset based on touch or mouse event
+        if (e.type === 'touchstart') {
+            offsetX = e.touches[0].clientX - rect.left;
+            offsetY = e.touches[0].clientY - rect.top;
+        } else {
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+        }
+
+        draggedElement.style.cursor = 'grabbing';
+    }
+}
+
+function moveDragging(e) {
+    if (draggedElement) {
+        let clientX, clientY;
+
+        // Get coordinates from touch or mouse event
+        if (e.type === 'touchmove') {
+            clientX = e.touches[0].clientX;
+            clientY = e.touches[0].clientY;
+        } else {
+            clientX = e.clientX;
+            clientY = e.clientY;
+        }
+
+        // Calculate new position based on mouse/touch coordinates and offset
+        const newX = clientX - offsetX;
+        const newY = clientY - offsetY;
+
+        // Ensure the window stays within the viewport
+        const maxX = window.innerWidth - draggedElement.offsetWidth;
+        const maxY = window.innerHeight - draggedElement.offsetHeight;
+
+        draggedElement.style.left = `${Math.min(Math.max(newX, 0), maxX)}px`;
+        draggedElement.style.top = `${Math.min(Math.max(newY, 0), maxY)}px`;
+    }
+}
+
+function stopDragging() {
+    if (draggedElement) {
+        draggedElement.style.cursor = 'grab';
+        draggedElement = null;
+    }
+}
+
+// Add event listeners for mouse and touch events
+document.addEventListener('mousedown', startDragging);
+document.addEventListener('mousemove', moveDragging);
+document.addEventListener('mouseup', stopDragging);
+
+document.addEventListener('touchstart', startDragging, { passive: false });
+document.addEventListener('touchmove', moveDragging, { passive: false });
+document.addEventListener('touchend', stopDragging);
+
+// Window Mode Toggle
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('window-handle')) {
+        const element = e.target.closest('.draggable-element');
+        element.classList.toggle('window-mode');
+        if (element.classList.contains('window-mode')) {
+            element.style.position = 'fixed';
+            element.style.top = '50px';
+            element.style.left = '50px';
+            element.style.zIndex = '1000';
+            element.style.cursor = 'move';
+        } else {
+            element.style.position = 'absolute';
+            element.style.cursor = 'grab';
+        }
+    }
+});
 </script>
 </head>
 </html>
