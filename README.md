@@ -9,11 +9,12 @@ this is the result of me spending a _little_ too much time from what is just a *
 
 ## Things included
 - **[easy to use]**: create text effects with just HTML and CSS
-- **a TON of premade stuff**: has **30+ built-in effects ᵃⁿᵈ ᶜᵒᵘⁿᵗᶦⁿᵍ**  and even some bonus ones!
-- **exporting & importing**: save and share your stuff to the world!
+- **[a TON of premade stuff]**: has **30+ built-in effects ᵃⁿᵈ ᶜᵒᵘⁿᵗᶦⁿᵍ**  and even some bonus ones!
+- **[exporting & importing]**: save and share your stuff to the world!
 - **customizable**\*
 #### \*You can change some stuff _(only a few of them)_
-- **A GOD DAMN EFFECT EDITOR**: THATS RIGHT! we now have custom effect support, able to be done by the all new `.tgy` format, and [heres the editor](https://wess64.github.io/tgy-editin/)
+- **[A GOD DAMN EFFECT EDITOR]**: THATS RIGHT! we now have custom effect support, able to be done by the all new `.tgy` format, and [heres the editor](https://wess64.github.io/tgy-editin/)
+- **[clicker game]** you can now not only do effects, but waste your valuable time on a **clicker game**! 
 
 # Contributing
 very much welcome! you can read [contributing](CONTRIBUTING.md) for info
