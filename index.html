@@ -414,27 +414,6 @@
     overflow-wrap: break;
     }
 
-    .drop-text {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 5px;
-    border: 2px solid #ccc;
-    background: #eee;
-    cursor: grab;
-    position: absolute;
-    transition: transform 0.3s ease-in-out;
-}
-
-.drop-place {
-    display: inline-block;
-    padding: 10px;
-    min-width: 100px;
-    min-height: 30px;
-    border: 2px dashed #aaa;
-    background: #f8f8f8;
-}
-
-
 .fake-ad {
     display: inline-block;
     position: relative;
@@ -522,11 +501,11 @@
 
         .minimized-elements-container {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    display: flex;
+    top: 10px;
+    left: 10px;
+    display: inline;
     flex-direction: column;
-    gap: 5px; /* Adds spacing between minimized buttons */
+    gap: 5px;
     z-index: 10000;
 }
 
@@ -574,9 +553,9 @@
         <div id="console" class="console-window" resizeable="true">
             <span class="close-button" id="closeButton" style="background-color:#555; color:white; padding:10px; width:100%; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">✘</span>
             <div class="console-output" id="output">
-                
+
                 <div>▀█▀⠀█░█⠀█⠀█▄░█⠀█▀▀⠀█▄█         ░█░⠀█▀█⠀█⠀█░▀█⠀█▄█⠀░█░</div> ════⠀c⠀o⠀n⠀s⠀o⠀l⠀e⠀═════
-                
+
 ‘hehe funny code thingy’ - Wess64
             </div>
             <span>
@@ -595,7 +574,36 @@
             <p id="editor" contenteditable="true" class="content-editable" style="background-color:#0D0C11; padding:5px; border-radius:5px;" placeholder="type here..."></p>
         </div>
     </div>
-    
+
+<div class="draggable-element" style="top: 800px; left: 300px;">
+    <span class="element-name">shine clicker</span>
+    <span class="drag-handle">✥</span>
+    <span class="window-handle">𖤂</span>
+    <span class="minimize-handle">─</span>
+    <hr style="border-style: solid; border-color: #ffffff; margin: 4px 0;">
+    <div class="element-content">
+        <div style="font-family: monospace; background-color: #0D0C11; padding: 10px; border-radius: 5px;">
+            <div style="text-align: center; margin-bottom: 10px; background-color: black;">
+                <button onclick="resetShineClicker()" 
+        style="border:none; background-color:#ff5555; border-radius:5px; padding:5px; color:white; grid-column: span 2;">
+    reset
+</button>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>⃯<span style="color: purple;">⃯❖⃰</span>: <span id="shine-count">0</span></span>
+                <span>auto: x<span id="auto-click-count">0</span></span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                <button onclick="clickShine()" style="border:none; background-color:#1D1C22; border-radius:5px; padding:5px; color:white; grid-column: span 2;">click</button>
+                <div style="border-top: 1px solid #555; padding-top: 5px; grid-column: span 2;"></div>
+                <button onclick="buyAutoClicker()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">auto-click [50 <span style="color: purple;">shines</span>]</button>
+                <button onclick="buyClickBoost()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">+click [100 <span style="color: purple;">shines</span>]</button>
+                <button onclick="saveShines()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white; grid-column: span 2;">save shines</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <div class="draggable-element" style="top: 300px; left: 50px;">
         <span class="element-name">management</span>
         <span class="drag-handle">✥</span>
@@ -621,6 +629,7 @@
             <button id="cursorSettingsBtn" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;"> ⚙ </button>
         </div>
     </div>
+    
     <div class="draggable-element" style="top: 550px; left: 50px;">
         <span class="element-name">links</span>
         <span class="drag-handle">✥</span>
@@ -628,12 +637,15 @@
         <span class="minimize-handle">╺╸</span>
         <hr style="border-style: solid; border-color: #ffffff; margin: 4px 0;">
         <div class="element-content">
-            <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
-            <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
-            <a href="https://wess64.github.io/tgy-editin" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">.TGY</a>
-        </div>
-    </div>
-    
+    <a href="https://github.com/Wess64/text-thingy/issues/1#issue-2751884494" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Syntax</a>
+    <a href="https://github.com/Wess64/text-thingy/issues/3#issue-2753645888" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px;">Exporting</a>
+    <div id="custom-links-container" style="margin-top: 10px;"></div>
+    <hr>
+        <input type="text" id="new-link-title" placeholder="Link title" style="background-color:#0D0C11; color:white; border:none; border-radius:5px; padding:5px; flex-grow:1;"><br>
+        <input type="text" id="new-link-url" placeholder="https://" style="background-color:#0D0C11; color:white; border:none; border-radius:5px; padding:5px; flex-grow:1;"><br>
+        <button onclick="addCustomLink()" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;">Add</button>
+</div>
+
 <span id="openButton" style="background-color:#555; color:white; padding:10px; width:100px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; position:fixed; bottom:20px; right:20px;">ᵒᵖᵉⁿ ᶜᵒⁿˢᵒˡᵉ ⤴</span>
 
 <div id="cursorSettings" style="display: none; position: absolute; background: #222; color: white; padding: 10px; border-radius: 5px;">
@@ -657,7 +669,7 @@
 <script> document.addEventListener("DOMContentLoaded", () => {
     const settingsBtn = document.getElementById("cursorSettingsBtn");
     const settingsMenu = document.getElementById("cursorSettings");
-    
+
 function loadCommentSettings() {
   document.documentElement.style.setProperty("--single-line-comment-color", localStorage.getItem("singleLineCommentColor") || "#888");
   document.getElementById('singleLineCommentColor').value = localStorage.getItem("singleLineCommentColor") || "#888888";
@@ -1846,6 +1858,285 @@ document.addEventListener('click', (e) => {
         }
     }
 });
+
+let shines = 0;
+let clickValue = 1;
+let autoClickers = 0;
+let autoClickInterval;
+
+function resetShineClicker() {
+    if (confirm("you sure you want to reset 𝑨𝑳𝑳 𝘀𝗵𝗶𝗻𝗲 𝗰𝗹𝗶𝗰𝗸𝗲𝗿 progress? this cannot be undone!")) {
+        shines = 0;
+        clickValue = 1;
+        autoClickers = 0;
+        clearInterval(autoClickInterval);
+        
+        localStorage.removeItem('shineClicker');
+        updateShineDisplay();
+        alert("░░░░░░ resetted ░░░░░░");
+    }
+}
+
+function loadShines() {
+    const saved = localStorage.getItem('shineClicker');
+    if (saved) {
+        const data = JSON.parse(saved);
+        shines = data.shines || 0;
+        clickValue = data.clickValue || 1;
+        autoClickers = data.autoClickers || 0;
+        updateShineDisplay();
+        startAutoClicker();
+    }
+}
+
+function saveShines() {
+    // Don't save if we're at zero (after reset)
+    if (shines === 0 && clickValue === 1 && autoClickers === 0) {
+        localStorage.removeItem('shineClicker');
+        return;
+    }
+    
+    const data = {
+        shines: Math.min(shines, 5000),
+        clickValue: clickValue,
+        autoClickers: autoClickers
+    };
+    localStorage.setItem('shineClicker', JSON.stringify(data));
+}
+
+function updateShineDisplay() {
+    document.getElementById('shine-count').textContent = Math.min(shines, 5000);
+    document.getElementById('auto-click-count').textContent = autoClickers;
+}
+
+function clickShine() {
+    shines += clickValue;
+    if (shines > 5000) shines = 5000;
+    updateShineDisplay();
+    
+    const clickEffect = document.createElement('div');
+    clickEffect.textContent = '⃯❖⃰';
+    clickEffect.style.position = 'absolute';
+    clickEffect.style.left = `${Math.random() * 100}px`;
+    clickEffect.style.animation = 'shineClick 1s forwards';
+    document.querySelector('.element-content').appendChild(clickEffect);
+    setTimeout(() => clickEffect.remove(), 1000);
+}
+
+function startAutoClicker() {
+    clearInterval(autoClickInterval);
+    if (autoClickers > 0) {
+        autoClickInterval = setInterval(() => {
+            shines += autoClickers;
+            if (shines > 5000) shines = 5000;
+            updateShineDisplay();
+        }, 1000);
+    }
+}
+
+function buyAutoClicker() {
+    if (shines >= 50) {
+        shines -= 50;
+        autoClickers++;
+        updateShineDisplay();
+        startAutoClicker();
+    } else {
+        alert("Need more ⃯❖⃰!");
+    }
+}
+
+function buyClickBoost() {
+    if (shines >= 100) {
+        shines -= 100;
+        clickValue++;
+        updateShineDisplay();
+    } else {
+        alert("Need more ⃯❖⃰!");
+    }
+}
+
+function saveWindowStates() {
+    const windows = document.querySelectorAll('.draggable-element');
+    const windowStates = [];
+    
+    windows.forEach(window => {
+        windowStates.push({
+            id: window.querySelector('.element-name').textContent,
+            x: window.style.left,
+            y: window.style.top,
+            rotation: window.dataset.rotation || '0',
+            width: window.style.width || 'auto',
+            height: window.style.height || 'auto'
+        });
+    });
+    
+    localStorage.setItem('windowStates', JSON.stringify(windowStates));
+}
+
+function loadWindowStates() {
+    const saved = localStorage.getItem('windowStates');
+    if (saved) {
+        const windowStates = JSON.parse(saved);
+        
+        windowStates.forEach(state => {
+            const window = [...document.querySelectorAll('.draggable-element')].find(
+                w => w.querySelector('.element-name').textContent === state.id
+            );
+            
+            if (window) {
+                window.style.left = state.x;
+                window.style.top = state.y;
+                window.style.width = state.width;
+                window.style.height = state.height;
+                
+                if (state.rotation !== '0') {
+                    window.style.transform = `rotate(${state.rotation}deg)`;
+                    window.dataset.rotation = state.rotation;
+                }
+            }
+        });
+    }
+}
+
+document.querySelectorAll('.element-name').forEach(title => {
+    title.contentEditable = true;
+    title.addEventListener('focus', () => {
+        if (!title.dataset.originalText) {
+            title.dataset.originalText = title.textContent;
+        }
+    });
+    title.addEventListener('blur', () => {
+        if (title.textContent.trim() === '') {
+            title.textContent = title.dataset.originalText;
+        }
+        saveWindowStates();
+    });
+    title.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            title.blur();
+        }
+    });
+});
+
+function createShineParticles() {
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => createParticle(), i * 300);
+    }
+    
+    setInterval(() => {
+        if (Math.random() > 0.7) createParticle();
+    }, 2000);
+}
+
+function createParticle() {
+    const particle = document.createElement('div');
+    particle.textContent = '⃯❖⃰';
+    particle.style.position = 'absolute';
+    particle.style.top = '-50px';
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.fontSize = `${Math.random() * 10 + 10}px`;
+    particle.style.opacity = '0.7';
+    particle.style.animation = `fall ${Math.random() * 10 + 10}s linear infinite`;
+    particle.style.transform = `rotate(${Math.random() * 360}deg)`;
+    
+    document.getElementById('shine-particles').appendChild(particle);
+    setTimeout(() => particle.remove(), 15000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes shineClick { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+        @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity: 0; } 10% { opacity: 0.7; } 90% { opacity: 0.7; } 100% { transform: translateY(calc(100vh + 50px)) rotate(360deg); opacity: 0; } }
+        .rotate-handle:hover { animation: spin 1s infinite linear; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .resize-handle:hover { color: #b162e8; }
+        .draggable-element { transition: transform 0.2s ease; min-width: 150px; min-height: 100px; }
+    `;
+    document.head.appendChild(style);
+
+    loadWindowStates();
+    loadShines();
+    createShineParticles();
+    
+    setInterval(() => {
+        saveWindowStates();
+        saveShines();
+    }, 5000);
+    window.addEventListener('beforeunload', () => {
+        saveWindowStates();
+        saveShines();
+    });
+});
+
+// Load custom links from localStorage
+function loadCustomLinks() {
+    const links = JSON.parse(localStorage.getItem('customLinks')) || [];
+    const container = document.getElementById('custom-links-container');
+    container.innerHTML = '';
+    
+    links.forEach(link => {
+        const linkElement = document.createElement('div');
+        linkElement.style.display = 'flex';
+        linkElement.style.gap = '5px';
+        linkElement.style.marginTop = '5px';
+        
+        linkElement.innerHTML = `
+            <a href="${link.url}" 
+               style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; flex-grow:1;">
+                ${link.title}
+            </a>
+            <button onclick="removeCustomLink('${link.id}')" 
+                    style="border:none; background-color:#ff5555; border-radius:5px; padding:5px; color:white;">
+                ×
+            </button>
+        `;
+        
+        container.appendChild(linkElement);
+    });
+}
+
+// Add new custom link
+function addCustomLink() {
+    const titleInput = document.getElementById('new-link-title');
+    const urlInput = document.getElementById('new-link-url');
+    
+    if (!titleInput.value || !urlInput.value) {
+        alert('Please enter both title and URL');
+        return;
+    }
+    
+    let url = urlInput.value;
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+    }
+    
+    const links = JSON.parse(localStorage.getItem('customLinks')) || [];
+    links.push({
+        id: Date.now().toString(),
+        title: titleInput.value,
+        url: url
+    });
+    
+    localStorage.setItem('customLinks', JSON.stringify(links));
+    
+    titleInput.value = '';
+    urlInput.value = '';
+    loadCustomLinks();
+}
+
+// Remove custom link
+function removeCustomLink(id) {
+    const links = JSON.parse(localStorage.getItem('customLinks')) || [];
+    const updatedLinks = links.filter(link => link.id !== id);
+    localStorage.setItem('customLinks', JSON.stringify(updatedLinks));
+    loadCustomLinks();
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', loadCustomLinks);
 </script>
+<div id="shine-particles" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998;"></div>
 </head>
 </html>
