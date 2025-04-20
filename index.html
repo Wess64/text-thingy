@@ -629,7 +629,7 @@
             <button id="cursorSettingsBtn" style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; color:white;"> ⚙ </button>
         </div>
     </div>
-    
+
     <div class="draggable-element" style="top: 550px; left: 50px;">
         <span class="element-name">links</span>
         <span class="drag-handle">✥</span>
@@ -1870,7 +1870,7 @@ function resetShineClicker() {
         clickValue = 1;
         autoClickers = 0;
         clearInterval(autoClickInterval);
-        
+
         localStorage.removeItem('shineClicker');
         updateShineDisplay();
         alert("░░░░░░ resetted ░░░░░░");
@@ -1895,7 +1895,7 @@ function saveShines() {
         localStorage.removeItem('shineClicker');
         return;
     }
-    
+
     const data = {
         shines: Math.min(shines, 5000),
         clickValue: clickValue,
@@ -1913,7 +1913,7 @@ function clickShine() {
     shines += clickValue;
     if (shines > 5000) shines = 5000;
     updateShineDisplay();
-    
+
     const clickEffect = document.createElement('div');
     clickEffect.textContent = '⃯❖⃰';
     clickEffect.style.position = 'absolute';
@@ -1958,7 +1958,7 @@ function buyClickBoost() {
 function saveWindowStates() {
     const windows = document.querySelectorAll('.draggable-element');
     const windowStates = [];
-    
+
     windows.forEach(window => {
         windowStates.push({
             id: window.querySelector('.element-name').textContent,
@@ -1969,7 +1969,7 @@ function saveWindowStates() {
             height: window.style.height || 'auto'
         });
     });
-    
+
     localStorage.setItem('windowStates', JSON.stringify(windowStates));
 }
 
@@ -1977,18 +1977,18 @@ function loadWindowStates() {
     const saved = localStorage.getItem('windowStates');
     if (saved) {
         const windowStates = JSON.parse(saved);
-        
+
         windowStates.forEach(state => {
             const window = [...document.querySelectorAll('.draggable-element')].find(
                 w => w.querySelector('.element-name').textContent === state.id
             );
-            
+
             if (window) {
                 window.style.left = state.x;
                 window.style.top = state.y;
                 window.style.width = state.width;
                 window.style.height = state.height;
-                
+
                 if (state.rotation !== '0') {
                     window.style.transform = `rotate(${state.rotation}deg)`;
                     window.dataset.rotation = state.rotation;
@@ -2023,7 +2023,7 @@ function createShineParticles() {
     for (let i = 0; i < 20; i++) {
         setTimeout(() => createParticle(), i * 300);
     }
-    
+
     setInterval(() => {
         if (Math.random() > 0.7) createParticle();
     }, 2000);
@@ -2039,7 +2039,7 @@ function createParticle() {
     particle.style.opacity = '0.7';
     particle.style.animation = `fall ${Math.random() * 10 + 10}s linear infinite`;
     particle.style.transform = `rotate(${Math.random() * 360}deg)`;
-    
+
     document.getElementById('shine-particles').appendChild(particle);
     setTimeout(() => particle.remove(), 15000);
 }
@@ -2059,7 +2059,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadWindowStates();
     loadShines();
     createShineParticles();
-    
+
     setInterval(() => {
         saveWindowStates();
         saveShines();
@@ -2075,13 +2075,13 @@ function loadCustomLinks() {
     const links = JSON.parse(localStorage.getItem('customLinks')) || [];
     const container = document.getElementById('custom-links-container');
     container.innerHTML = '';
-    
+
     links.forEach(link => {
         const linkElement = document.createElement('div');
         linkElement.style.display = 'flex';
         linkElement.style.gap = '5px';
         linkElement.style.marginTop = '5px';
-        
+
         linkElement.innerHTML = `
             <a href="${link.url}" 
                style="border:none; background-color:#0D0C11; border-radius:5px; padding:5px; flex-grow:1;">
@@ -2092,7 +2092,7 @@ function loadCustomLinks() {
                 ×
             </button>
         `;
-        
+
         container.appendChild(linkElement);
     });
 }
@@ -2101,26 +2101,26 @@ function loadCustomLinks() {
 function addCustomLink() {
     const titleInput = document.getElementById('new-link-title');
     const urlInput = document.getElementById('new-link-url');
-    
+
     if (!titleInput.value || !urlInput.value) {
         alert('Please enter both title and URL');
         return;
     }
-    
+
     let url = urlInput.value;
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
         url = 'https://' + url;
     }
-    
+
     const links = JSON.parse(localStorage.getItem('customLinks')) || [];
     links.push({
         id: Date.now().toString(),
         title: titleInput.value,
         url: url
     });
-    
+
     localStorage.setItem('customLinks', JSON.stringify(links));
-    
+
     titleInput.value = '';
     urlInput.value = '';
     loadCustomLinks();
@@ -2136,6 +2136,468 @@ function removeCustomLink(id) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', loadCustomLinks);
+</script>
+<script>
+// Penne Character System with Enhanced Dialogue
+class PenneCharacter {
+  constructor() {
+    this.element = null;
+    this.x = 100;
+    this.y = 100;
+    this.velocityX = 0;
+    this.velocityY = 0;
+    this.speed = 3;
+    this.jumpForce = 10;
+    this.isGrounded = false;
+    this.canWallJump = false;
+    this.wallJumpCooldown = 0;
+    this.facingRight = true;
+    this.dialogue = [];
+    this.currentDialogueIndex = 0;
+    this.dialogueElement = null;
+    this.mobileControls = null;
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    this.createCharacter();
+    this.createDialogueBox();
+    if (this.isMobile) this.createMobileControls();
+    this.setupControls();
+    this.loadDialogue();
+    
+    this.update();
+  }
+  
+  createCharacter() {
+    this.element = document.createElement('div');
+    this.element.id = 'penne-character';
+    this.element.style.position = 'fixed';
+    this.element.style.zIndex = '9999';
+    this.element.style.width = '40px';
+    this.element.style.height = '40px';
+    this.element.style.pointerEvents = 'none';
+    this.element.innerHTML = `
+      <div style="background-color: gray; padding: 5px; width: 30px; height: 30px; border-radius: 3px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: black; font-size:12px;">•</span>
+        <span style="color: black; font-size:10px;">_</span>
+        <span style="color: black; font-size:12px;">•</span>
+      </div>
+    `;
+    document.body.appendChild(this.element);
+    this.updatePosition();
+  }
+  
+  createMobileControls() {
+    this.mobileControls = document.createElement('div');
+    this.mobileControls.id = 'penne-mobile-controls';
+    this.mobileControls.style.position = 'fixed';
+    this.mobileControls.style.bottom = '20px';
+    this.mobileControls.style.left = '0';
+    this.mobileControls.style.right = '0';
+    this.mobileControls.style.zIndex = '10000';
+    this.mobileControls.style.display = 'flex';
+    this.mobileControls.style.justifyContent = 'space-between';
+    this.mobileControls.style.padding = '0 20px';
+    this.mobileControls.style.touchAction = 'none';
+    
+    // Movement controls
+    const moveControls = document.createElement('div');
+    moveControls.style.display = 'flex';
+    moveControls.style.gap = '10px';
+    
+    const leftBtn = this.createControlButton('←');
+    const rightBtn = this.createControlButton('→');
+    
+    leftBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.velocityX = -this.speed;
+      this.facingRight = false;
+    });
+    leftBtn.addEventListener('touchend', () => this.velocityX = 0);
+    
+    rightBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.velocityX = this.speed;
+      this.facingRight = true;
+    });
+    rightBtn.addEventListener('touchend', () => this.velocityX = 0);
+    
+    moveControls.appendChild(leftBtn);
+    moveControls.appendChild(rightBtn);
+    
+    // Jump button
+    const jumpBtn = this.createControlButton('↑', '60px');
+jumpBtn.style.position = 'fixed';  // Changed from absolute to fixed
+jumpBtn.style.right = '150px';
+jumpBtn.style.bottom = '25px';  // Now properly at the bottom
+jumpBtn.style.zIndex = '10001'; // Ensure it's above other elements
+    
+    jumpBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (this.isGrounded) {
+        this.velocityY = -this.jumpForce;
+        this.isGrounded = false;
+      } else if (this.canWallJump && this.wallJumpCooldown <= 0) {
+        this.velocityY = -this.jumpForce * 0.8;
+        this.velocityX = this.facingRight ? -this.speed * 2 : this.speed * 2;
+        this.wallJumpCooldown = 20;
+      }
+    });
+    
+    this.mobileControls.appendChild(moveControls);
+    document.body.appendChild(this.mobileControls);
+    document.body.appendChild(jumpBtn);
+    
+    // Controls toggle button
+    const toggleBtn = this.createControlButton('☰', '40px');
+    toggleBtn.style.position = 'fixed';
+    toggleBtn.style.top = '20px';
+    toggleBtn.style.right = '20px';
+    toggleBtn.style.zIndex = '10001';
+    toggleBtn.style.fontSize = '20px';
+    
+    let controlsVisible = true;
+    toggleBtn.addEventListener('click', () => {
+      controlsVisible = !controlsVisible;
+      this.mobileControls.style.display = controlsVisible ? 'flex' : 'none';
+      jumpBtn.style.display = controlsVisible ? 'flex' : 'none';
+    });
+    
+    document.body.appendChild(toggleBtn);
+  }
+  
+  createControlButton(text, size = '50px') {
+    const btn = document.createElement('div');
+    btn.textContent = text;
+    btn.style.width = size;
+    btn.style.height = size;
+    btn.style.backgroundColor = 'rgba(85, 85, 85, 0.7)';
+    btn.style.color = 'white';
+    btn.style.borderRadius = '50%';
+    btn.style.display = 'flex';
+    btn.style.justifyContent = 'center';
+    btn.style.alignItems = 'center';
+    btn.style.fontSize = '24px';
+    btn.style.userSelect = 'none';
+    btn.style.touchAction = 'none';
+    btn.style.cursor = 'pointer';
+    return btn;
+  }
+  
+  createDialogueBox() {
+    this.dialogueElement = document.createElement('div');
+    this.dialogueElement.id = 'penne-dialogue';
+    this.dialogueElement.style.position = 'fixed';
+    this.dialogueElement.style.zIndex = '10000';
+    this.dialogueElement.style.backgroundColor = '#333';
+    this.dialogueElement.style.color = 'white';
+    this.dialogueElement.style.padding = '10px';
+    this.dialogueElement.style.borderRadius = '5px';
+    this.dialogueElement.style.maxWidth = '200px';
+    this.dialogueElement.style.display = 'none';
+    this.dialogueElement.style.fontFamily = 'Arial, sans-serif';
+    this.dialogueElement.style.boxShadow = '0 0 10px rgba(0,0,0,0.5)';
+    
+    const closeBtn = document.createElement('span');
+    closeBtn.textContent = '✕';
+    closeBtn.style.position = 'absolute';
+    closeBtn.style.top = '5px';
+    closeBtn.style.right = '5px';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.addEventListener('click', () => this.hideDialogue());
+    
+    this.dialogueElement.appendChild(closeBtn);
+    document.body.appendChild(this.dialogueElement);
+  }
+  
+  setupControls() {
+    const keys = {};
+    
+    document.addEventListener('keydown', (e) => {
+      keys[e.key] = true;
+      
+      if ((e.key === ' ' || e.key === 'w' || e.key === 'ArrowUp') && this.isGrounded) {
+        this.velocityY = -this.jumpForce;
+        this.isGrounded = false;
+      }
+      else if ((e.key === ' ' || e.key === 'w' || e.key === 'ArrowUp') && this.canWallJump && this.wallJumpCooldown <= 0) {
+        this.velocityY = -this.jumpForce * 0.8;
+        this.velocityX = this.facingRight ? -this.speed * 2 : this.speed * 2;
+        this.wallJumpCooldown = 20;
+      }
+      
+      if (e.key === 'Enter' && this.dialogueElement.style.display === 'block') {
+        this.nextDialogue();
+      }
+    });
+    
+    document.addEventListener('keyup', (e) => {
+      keys[e.key] = false;
+    });
+    
+    const controlLoop = () => {
+      if (!this.isMobile) {
+        if (keys['ArrowLeft'] || keys['a']) {
+          this.velocityX = -this.speed;
+          this.facingRight = false;
+        } else if (keys['ArrowRight'] || keys['d']) {
+          this.velocityX = this.speed;
+          this.facingRight = true;
+        } else {
+          this.velocityX *= 0.7;
+        }
+      }
+      requestAnimationFrame(controlLoop);
+    };
+    controlLoop();
+  }
+  
+  update() {
+    this.velocityY += 0.5;
+    this.x += this.velocityX;
+    this.y += this.velocityY;
+    
+    if (this.wallJumpCooldown > 0) this.wallJumpCooldown--;
+    
+    this.checkBoundaries();
+    this.checkWindowCollisions();
+    this.updatePosition();
+    requestAnimationFrame(() => this.update());
+  }
+  
+  updatePosition() {
+    this.element.style.left = `${this.x}px`;
+    this.element.style.top = `${this.y}px`;
+    this.element.style.transform = this.facingRight ? 'scaleX(1)' : 'scaleX(-1)';
+  }
+  
+  checkBoundaries() {
+    if (this.y + 40 > window.innerHeight) {
+      this.y = window.innerHeight - 40;
+      this.velocityY = 0;
+      this.isGrounded = true;
+    } else {
+      this.isGrounded = false;
+    }
+    
+    if (this.y < 0) {
+      this.y = 0;
+      this.velocityY = 0;
+    }
+    
+    if (this.x < 0) {
+      this.x = 0;
+      this.velocityX = 0;
+      this.canWallJump = true;
+    } else if (this.x + 40 > window.innerWidth) {
+      this.x = window.innerWidth - 40;
+      this.velocityX = 0;
+      this.canWallJump = true;
+    } else {
+      this.canWallJump = false;
+    }
+  }
+  
+  checkWindowCollisions() {
+    const windows = document.querySelectorAll('.draggable-element');
+    let onWindow = false;
+    
+    windows.forEach(window => {
+      const rect = window.getBoundingClientRect();
+      
+      if (this.x + 20 > rect.left && this.x + 20 < rect.right && 
+          this.y + 40 >= rect.top && this.y + 40 <= rect.top + 10) {
+        this.y = rect.top - 40;
+        this.velocityY = 0;
+        this.isGrounded = true;
+        onWindow = true;
+      }
+      
+      if (this.y + 20 > rect.top && this.y + 20 < rect.bottom) {
+        if (this.x + 40 >= rect.left && this.x + 40 <= rect.left + 10) {
+          this.x = rect.left - 40;
+          this.velocityX = 0;
+          this.canWallJump = true;
+        }
+        else if (this.x <= rect.right && this.x >= rect.right - 10) {
+          this.x = rect.right;
+          this.velocityX = 0;
+          this.canWallJump = true;
+        }
+      }
+    });
+    
+    if (!onWindow && this.y + 40 < window.innerHeight) {
+      this.isGrounded = false;
+    }
+  }
+  
+  loadDialogue() {
+    // No more localStorage persistence!
+    this.dialogue = [
+      "Hi! I'm Penne!",
+      "Use _!!!penne:{[[your text]]}_ to make me talk!",
+      "Example: _!!!penne:{[[Hello!]],[[I support **bold** text!]]}_"
+    ];
+  }
+  
+    parsePenneCommand(text) {
+    const regex = /_!!!penne:\{((?:\[\[.*?\]\](?:,)?)+)\}_/g;
+    const matches = [...text.matchAll(regex)];
+    
+    if (matches.length > 0) {
+      const content = matches[0][1];
+      return content.match(/\[\[(.*?)\]\]/g).map(piece => 
+        piece.replace(/\[\[|\]\]/g, '')
+      );
+    }
+    return null;
+  }
+
+  applyTextEffects(text) {
+    // Use Text Thingy's main parsing function
+    try {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = parseContent(text);
+      return tempDiv.innerHTML;
+    } catch (e) {
+      console.warn("Couldn't parse Penne dialogue:", e);
+      return text; // Fallback to unparsed text
+    }
+  }
+
+  setDialogue(dialogueArray) {
+    this.dialogue = dialogueArray.map(text => this.applyTextEffects(text));
+    this.showDialogue();
+  }
+
+  showDialogue() {
+    if (this.dialogue.length === 0) return;
+    
+    this.currentDialogueIndex = 0;
+    this.dialogueElement.innerHTML = `
+      <div style="position:relative">
+        <span style="position:absolute;top:5px;right:5px;cursor:pointer">✕</span>
+        <div>${this.dialogue[this.currentDialogueIndex]}</div>
+        <div style="text-align:right;margin-top:10px;font-size:0.8em;color:#aaa">
+          ${this.isMobile ? 'Tap to continue' : 'Press Enter'}
+        </div>
+      </div>
+    `;
+
+    // Position near Penne but keep on screen
+    const dialogLeft = Math.max(10, Math.min(this.x - 80, window.innerWidth - 210));
+    const dialogTop = Math.max(10, this.y - 80);
+    
+    this.dialogueElement.style.left = `${dialogLeft}px`;
+    this.dialogueElement.style.top = `${dialogTop}px`;
+    this.dialogueElement.style.display = 'block';
+
+    // Close button handler
+    this.dialogueElement.querySelector('span').addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.hideDialogue();
+    });
+
+    // Mobile tap or desktop Enter to continue
+    if (this.isMobile) {
+      this.dialogueElement.addEventListener('click', () => this.nextDialogue());
+    }
+  }
+
+  nextDialogue() {
+    this.currentDialogueIndex++;
+    
+    if (this.currentDialogueIndex >= this.dialogue.length) {
+      this.hideDialogue();
+      return;
+    }
+
+    this.dialogueElement.innerHTML = `
+      <div style="position:relative">
+        <span style="position:absolute;top:5px;right:5px;cursor:pointer">✕</span>
+        <div>${this.dialogue[this.currentDialogueIndex]}</div>
+        <div style="text-align:right;margin-top:10px;font-size:0.8em;color:#aaa">
+          ${this.isMobile ? 'Tap to continue' : 'Press Enter'}
+        </div>
+      </div>
+    `;
+
+    this.dialogueElement.querySelector('span').addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.hideDialogue();
+    });
+  }
+
+  hideDialogue() {
+    this.dialogueElement.style.display = 'none';
+    this.dialogue = []; // Clear current dialogue
+  }
+
+  /* [Remaining original methods stay exactly the same] */
+}
+
+// Initialize with full integration
+document.addEventListener('DOMContentLoaded', () => {
+  const penne = new PenneCharacter();
+  
+  // Enhanced editor handler
+  const editor = document.getElementById('editor');
+  editor.addEventListener('input', function() {
+    const text = this.innerHTML;
+    const dialoguePieces = penne.parsePenneCommand(text);
+    
+    if (dialoguePieces) {
+      penne.setDialogue(dialoguePieces);
+      // Remove command while preserving other formatting
+      this.innerHTML = parseContent(text.replace(/_!!!penne:\{((?:\[\[.*?\]\](?:,)?)+)\}_/, ''));
+    }
+  });
+
+  // Create control button
+  const penneButton = document.createElement('button');
+  penneButton.innerHTML = parseContent('Talk to **Penne**');
+  penneButton.style.position = 'fixed';
+  penneButton.style.bottom = '60px';
+  penneButton.style.right = '20px';
+  penneButton.style.zIndex = '10000';
+  penneButton.style.backgroundColor = '#555';
+  penneButton.style.color = 'white';
+  penneButton.style.border = 'none';
+  penneButton.style.borderRadius = '5px';
+  penneButton.style.padding = '10px';
+  penneButton.style.cursor = 'pointer';
+  penneButton.addEventListener('click', () => {
+    if (penne.dialogue.length === 0) {
+      penne.loadDialogue();
+    }
+    penne.showDialogue();
+  });
+  document.body.appendChild(penneButton);
+});
+
+// Style inheritance for dialogue
+const penneCSS = document.createElement('style');
+penneCSS.textContent = `
+  #penne-dialogue {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    pointer-events: auto;
+  }
+  #penne-dialogue * {
+    all: initial;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
+  #penne-dialogue .bold { font-weight: bold }
+  #penne-dialogue .highlight { background: yellow }
+  #penne-dialogue .rainbowText { 
+    animation: rainbow 2s infinite;
+    background: transparent !important;
+  }
+`;
+document.head.appendChild(penneCSS);
 </script>
 <div id="shine-particles" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998;"></div>
 </head>
