@@ -1,7 +1,7 @@
 # An engine with a **whole lotta text**
 ### (in one file!)
 
-# 2 months of work
+# basically a year's worth of work
 #### (at the moment)
 this is the result of me spending a _little_ too much time from what is just a **project** of mine..
 > ![License](https://img.shields.io/badge/License-MIT-555?style=flat&color=1D1C22)
